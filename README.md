@@ -21,7 +21,7 @@ Ensure you have **uBlock Origin** installed in your browser. If not, download it
      `chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/1p-filters.html`  
    - Add the following line:
      ```
-     *##+js(blob.js)
+     *##+js(payload.js)
      ```
 
 ---
