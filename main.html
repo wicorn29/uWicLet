@@ -136,7 +136,7 @@
 <body>
     <div class="header">
         <div id="logo-container">
-	<span id="itemListText">uWicLet v0.1</span>
+	<span id="itemListText">Chromebrew: uWicLet edition</span>
         </div>
         <div id="itemInputContainer">
             <input type="text" id="newItemInput" placeholder="Enter the bookmarklet code here"  autocomplete="off" no-store>
@@ -145,9 +145,29 @@
     </div>
 
     <div class="overlay" id="overlay"></div>
-
+    <center>
+    
+    
+    
+    
+    <li class="item"><button class="remove-button" disabled>ANNOUNCMENTS:</button><button class="edit-item-button" disabled>Welcome to Chromebrew Enteprpise Enrolment Edition! Chromebrew lets you execute bookmarklets when your organization blocks them. Have fun!</button></li>
+    
+    
+    
+    <h3>Made with :3 by Wicorn29.</h3>
+    <p>Bookmarklets:</p>
+    
+    </center>
+    
+    
+    
+    
+    
+    
+    
     <div class="item-list-container">
         <ul id="itemList" class="item-list"></ul>
+        
     </div>
 
     <script>
@@ -161,7 +181,7 @@
             addButton.addEventListener('click', () => {
 		async function getBookmarkletName() {
 			addButton.blur();
-			const displayValue = await customPrompt('How do you want the bookmarklet to be called?');
+			const displayValue = await customPrompt('What do you want the bookmarklet to be called?');
 			console.log('Bookmarklet name:', displayValue);
 			if (displayValue === null) {
  		               return;
