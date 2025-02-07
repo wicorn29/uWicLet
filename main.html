@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>uWicLet</title>
+    <style>
+        @font-face {
+            font-family: 'Varela Round';
+            src: url('https://github.com/wicorn29/uWicLet/raw/refs/heads/main/wicorn29font.woff') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f4f4f4;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background-color: #282828;
+            color: #fff;
+        }
+
+        #logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        #logo {
+            max-width: 80px;
+            max-height: 40px;
+            margin-right: 15px;
+        }
+
+        #itemListText {
+            font-size: 18px;
+            font-family: 'Varela Round', sans-serif;
+        }
+
+        #itemInputContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #newItemInput {
+            width: 220px;
+            padding: 8px;
+            border-radius: 5px;
+            margin-left: 0;
+            font-family: 'Varela Round', sans-serif;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+
+        #newItemInput::placeholder {
+            text-align: center;
+        }
+
+        #addItemButton {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Varela Round', sans-serif;
+            margin-top: 8px;
+            border-radius: 5px;
+        }
+
+        .item-list-container {
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .item-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            background-color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-button {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 12px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Varela Round', sans-serif;
+            border-radius: 5px;
+        }
+
+        .remove-button {
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+            font-family: 'Varela Round', sans-serif;
+            border-radius: 5px;
+        }
+
+        .edit-display-button, .edit-item-button {
+            background-color: #ffc107;
+            color: white;
+            padding: 5px 12px;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+            font-family: 'Varela Round', sans-serif;
+            border-radius: 5px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div id="logo-container">
+            <img id="logo" src="logo.png" alt="Logo">
+            <span id="itemListText">uWicLet: Bookmarklet</span>
+        </div>
+        <div id="itemInputContainer">
+            <input type="text" id="newItemInput" placeholder="Enter the bookmarklet code here" autocomplete="off">
+            <button id="addItemButton">Add Bookmarklet</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="item-list-container">
+        <ul id="itemList" class="item-list"></ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let updatedItemText;
+            const itemList = document.getElementById('itemList');
+            const newItemInput = document.getElementById('newItemInput');
+            const addButton = document.getElementById('addItemButton');
+            const overlay = document.getElementById('overlay');
+
+            addButton.addEventListener('click', () => {
+                async function getBookmarkletName() {
+                    addButton.blur();
+                    const displayValue = await customPrompt('How do you want the bookmarklet to be called?');
+                    if (displayValue === null) return;
+
+                    const itemValue = newItemInput.value.trim();
+                    if (!itemValue) return;
+
+                    addItemToList(displayValue, itemValue);
+                    saveItemsToLocalStorage();
+                    newItemInput.value = '';
+                }
+                getBookmarkletName();
+            });
+
+            function addItemToList(displayValue, itemValue) {
+                const newItem = document.createElement('li');
+                newItem.className = 'item';
+
+                const itemButton = document.createElement('button');
+                itemButton.className = 'item-button';
+                itemButton.textContent = displayValue;
+                itemButton.title = itemValue;
+                itemButton.addEventListener('click', () => {
+                    const selectedItemValue = itemButton.title;
+                    runScript(selectedItemValue);
+                });
+
+                const removeButton = document.createElement('button');
+                removeButton.className = 'remove-button';
+                removeButton.textContent = 'Remove';
+                removeButton.addEventListener('click', () => {
+                    itemList.removeChild(newItem);
+                    saveItemsToLocalStorage();
+                });
+
+                const editDisplayButton = document.createElement('button');
+                editDisplayButton.className = 'edit-display-button';
+                editDisplayButton.textContent = 'Edit Name';
+                editDisplayButton.addEventListener('click', () => {
+                    async function getDisplayValue() {
+                        const newDisplayValue = await customPrompt('Enter the new name:', '', itemButton.textContent);
+                        if (newDisplayValue !== null) {
+                            itemButton.textContent = newDisplayValue;
+                            saveItemsToLocalStorage();
+                        }
+                    }
+                    editDisplayButton.blur();
+                    getDisplayValue();
+                });
+
+                const editItemButton = document.createElement('button');
+                editItemButton.className = 'edit-item-button';
+                editItemButton.textContent = 'Edit Bookmarklet';
+                editItemButton.addEventListener('click', () => {
+                    async function getItemValue() {
+                        const newItemValue = await customPrompt('Enter the new bookmarklet code:', '', itemButton.title);
+                        if (newItemValue !== null) {
+                            itemButton.title = newItemValue;
+                            saveItemsToLocalStorage();
+                        }
+                    }
+                    editItemButton.blur();
+                    getItemValue();
+                });
+
+                newItem.appendChild(itemButton);
+                newItem.appendChild(removeButton);
+                newItem.appendChild(editDisplayButton);
+                newItem.appendChild(editItemButton);
+
+                itemList.appendChild(newItem);
+            }
+
+            function saveItemsToLocalStorage() {
+                const items = Array.from(document.querySelectorAll('.item-button')).map(button => {
+                    return {
+                        display: button.textContent,
+                        item: button.title,
+                    };
+                });
+                localStorage.setItem('items', JSON.stringify(items));
+            }
+
+            function runScript(selectedItemValue) {
+                overlay.style.display = 'flex';
+                setTimeout(() => {
+                    window.parent.postMessage("run:" + selectedItemValue, '*');
+                }, 500);
+            }
+
+            const storedItems = localStorage.getItem('items');
+            if (storedItems) {
+                const parsedItems = JSON.parse(storedItems);
+                parsedItems.forEach(item => {
+                    addItemToList(item.display, item.item);
+                });
+            }
+        });
+
+        function customAlert(message) {
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            overlay.style.display = 'flex';
+            overlay.style.justifyContent = 'center';
+            overlay.style.alignItems = 'center';
+            overlay.style.zIndex = '1000';
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.3s ease';
+
+            const alertBox = document.createElement('div');
+            alertBox.style.backgroundColor = 'white';
+            alertBox.style.padding = '20px';
+            alertBox.style.borderRadius = '8px';
+            alertBox.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+            alertBox.style.width = '350px';
+            alertBox.style.height = '200px';
+            alertBox.style.textAlign = 'center';
+            alertBox.style.fontFamily = '"Varela Round", sans-serif';
+            alertBox.style.transform = 'scale(0.8)';
+            alertBox.style.transition = 'transform 0.3s ease';
+            alertBox.style.display = 'flex';
+            alertBox.style.flexDirection = 'column';
+            alertBox.style.alignItems = 'center';
+            alertBox.style.justifyContent = 'center';
+
+            const alertMessage = document.createElement('p');
+            alertMessage.textContent = message;
+            alertMessage.style.margin = '0 0 20px';
+            alertMessage.style.fontSize = '20px';
+            alertMessage.style.color = '#333';
+            alertBox.appendChild(alertMessage);
+
+            const okButton = document.createElement('button');
+            okButton.textContent = 'OK';
+            okButton.style.padding = '10px 20px';
+            okButton.style.border = 'none';
+            okButton.style.borderRadius = '5px';
+            okButton.style.backgroundColor = 'green';
+            okButton.style.color = 'white';
+            okButton.style.cursor = 'pointer';
+            okButton.style.fontSize = '16px';
+            okButton.addEventListener('click', () => {
+                overlay.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(overlay), 300);
+            });
+
+            alertBox.appendChild(okButton);
+            overlay.appendChild(alertBox);
+            document.body.appendChild(overlay);
+
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+                alertBox.style.transform = 'scale(1)';
+            }, 50);
+        }
+
+        async function customPrompt(promptMessage, defaultValue = '', initialValue = '') {
+            return new Promise(resolve => {
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                overlay.style.display = 'flex';
+                overlay.style.justifyContent = 'center';
+                overlay.style.alignItems = 'center';
+                overlay.style.zIndex = '1000';
+                overlay.style.opacity = '0';
+                overlay.style.transition = 'opacity 0.3s ease';
+
+                const promptBox = document.createElement('div');
+                promptBox.style.backgroundColor = 'white';
+                promptBox.style.padding = '20px';
+                promptBox.style.borderRadius = '8px';
+                promptBox.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                promptBox.style.width = '350px';
+                promptBox.style.height = '300px';
+                promptBox.style.textAlign = 'center';
+                promptBox.style.fontFamily = '"Varela Round", sans-serif';
+                promptBox.style.transform = 'scale(0.8)';
+                promptBox.style.transition = 'transform 0.3s ease';
+                promptBox.style.display = 'flex';
+                promptBox.style.flexDirection = 'column';
+                promptBox.style.alignItems = 'center';
+                promptBox.style.justifyContent = 'center';
+
+                const promptMessageElement = document.createElement('p');
+                promptMessageElement.textContent = promptMessage;
+                promptMessageElement.style.margin = '0 0 20px';
+                promptMessageElement.style.fontSize = '20px';
+                promptMessageElement.style.color = '#333';
+                promptBox.appendChild(promptMessageElement);
+
+                const inputElement = document.createElement('input');
+                inputElement.type = 'text';
+                inputElement.value = initialValue;
+                inputElement.style.padding = '10px';
+                inputElement.style.borderRadius = '5px';
+                inputElement.style.border = '1px solid #ccc';
+                inputElement.style.fontFamily = '"Varela Round", sans-serif';
+                inputElement.style.fontSize = '16px';
+                inputElement.style.marginBottom = '20px';
+                promptBox.appendChild(inputElement);
+
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.display = 'flex';
+                buttonContainer.style.gap = '10px';
+
+                const cancelButton = document.createElement('button');
+                cancelButton.textContent = 'Cancel';
+                cancelButton.style.padding = '10px 20px';
+                cancelButton.style.border = 'none';
+                cancelButton.style.borderRadius = '5px';
+                cancelButton.style.backgroundColor = 'red';
+                cancelButton.style.color = 'white';
+                cancelButton.style.cursor = 'pointer';
+                cancelButton.addEventListener('click', () => {
+                    resolve(null);
+                    document.body.removeChild(overlay);
+                });
+
+                const okButton = document.createElement('button');
+                okButton.textContent = 'OK';
+                okButton.style.padding = '10px 20px';
+                okButton.style.border = 'none';
+                okButton.style.borderRadius = '5px';
+                okButton.style.backgroundColor = 'green';
+                okButton.style.color = 'white';
+                okButton.style.cursor = 'pointer';
+                okButton.addEventListener('click', () => {
+                    resolve(inputElement.value);
+                    document.body.removeChild(overlay);
+                });
+
+                buttonContainer.appendChild(cancelButton);
+                buttonContainer.appendChild(okButton);
+
+                promptBox.appendChild(buttonContainer);
+                overlay.appendChild(promptBox);
+                document.body.appendChild(overlay);
+
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    promptBox.style.transform = 'scale(1)';
+                }, 50);
+            });
+        }
+    </script>
+</body>
+</html>
