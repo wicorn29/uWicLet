@@ -14,7 +14,7 @@ Ensure you have **uBlock Origin** installed in your browser. If not, download it
      `chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/advanced-settings.html`  
    - Locate `userResourcesLocation`.
    - Change its value from `unset` to:  
-     `https://raw.githubusercontent.com/wicorn29/uWicLet/main/blob.js`
+     `https://raw.githubusercontent.com/wicorn29/uWicLet/main/payload.js`
 
 ### 3. **Modify Custom Filters**
    - Navigate to:  
