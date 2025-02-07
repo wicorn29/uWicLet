@@ -1,51 +1,55 @@
-# Welcome to uBlobeBM (BlobeBM uBlock Edition)!
+# Welcome to uWicLet!
 
-**uBlobeBM** is a tool that can run bookmarklets using **uBlock Origin** by utilizing the **uBlock Run** exploit. It's very useful if bookmarklets don’t work on your device or are blocked by your administrator. uBlobeBM also does some CSP bypassing shenanigans, which allow it to work in a lot of sites (like Blooket) in which regular **uBlock Run** or **uRun** don't.
+**uWicLet** is a tool that allows you to execute and manage bookmarklets using **uBlock Origin** by leveraging the **uBlock Run** exploit. This is especially useful if bookmarklets are blocked by your administrator or do not work on your device. **uWicLet** also includes some CSP bypassing techniques, making it functional on sites where regular **uBlock Run** or **uRun** fail, such as Blooket.
 
 ---
 
-## **How to Setup uBlobeBM**
+## **How to Set Up uWicLet**
 
-1. **Installing uBlock Origin**  
-   Make sure you have **uBlock Origin** installed on your computer. If you don't, download it [here](https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm).
+### 1. **Install uBlock Origin**
+Ensure you have **uBlock Origin** installed in your browser. If not, download it [here](https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm).
 
-2. **Modifying Advanced Settings**  
-   - Go to:  
+### 2. **Modify Advanced Settings**
+   - Navigate to:  
      `chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/advanced-settings.html`  
-   - Find `userResourcesLocation`.  
-   - Change it from `unset` to:  
-     `https://raw.githubusercontent.com/Blobby-Boi/uBlobeBM/refs/heads/main/blob.js`
+   - Locate `userResourcesLocation`.
+   - Change its value from `unset` to:  
+     `https://raw.githubusercontent.com/wicorn29/uWicLet/main/blob.js`
 
-2. **Modifying Custom Filters**  
-   - Go to:  
+### 3. **Modify Custom Filters**
+   - Navigate to:  
      `chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/1p-filters.html`  
-   - Add the following line of code:  
+   - Add the following line:
      ```
      *##+js(blob.js)
      ```
 
 ---
 
-## **How to use uBlobeBM**
-1. **Opening uBlobeBM**  
-   - Press `CTRL + Shift + ~` to open uBlobeBM.
-   - If you are warned that the website you are running it on has a strong **Content Security Policy**, it means that some bookmarklets will not work as expected. Those are mainly the ones that create a script referencing an **external source**.
+## **How to Use uWicLet**
 
-2. **Adding Bookmarklets**  
-   - Locate the **"Enter bookmarklet code here"** text input.  
-   - You can either:  
-     - Copy and paste the bookmarklet code.  
-     - Drag the bookmarklet from your bookmark bar into the input field directly.  
+### 1. **Opening uWicLet**
+   - Press `CTRL + Shift + ~` to open uWicLet.
+   - If you receive a warning about a strict **Content Security Policy (CSP)**, some bookmarklets may not work properly—especially those that load scripts from external sources.
+
+### 2. **Adding Bookmarklets**
+   - Locate the **"Enter bookmarklet code here"** text input.
+   - You can either:
+     - Copy and paste the bookmarklet code.
+     - Drag a bookmarklet from your bookmarks bar into the input field.
    - Click the green **"Add Bookmarklet"** button.
-   - Enter the name you’d like for the bookmarklet. The name can be anything, and it can be changed later.
-   - You can add as many bookmarklets as you need into uBlobeBM, and they will save even if you close the window or shut down your device.
+   - Assign a name to your bookmarklet (which can be changed later).
+   - You can store multiple bookmarklets, and they will persist even after closing your browser or restarting your device.
 
-3. **Executing Bookmarklets**  
-   - Once added, your bookmarklet will appear which consists of four buttons:  
-     - **Blue button**: Run the bookmarklet.  
-     - **Red button**: Remove the bookmarklet.  
+### 3. **Executing Bookmarklets**
+   - Once added, your bookmarklet will appear with four buttons:
+     - **Blue button**: Run the bookmarklet.
+     - **Red button**: Delete the bookmarklet.
      - **Yellow buttons**: Edit the bookmarklet's name and code.
-       
-   You might come across a website where uBlobeBM complety fails to load on (such as **Github** or any **Google Subdomain**). This occurs because they have a strong **Content Security Policy** that can't be bypassed easily, though there are very few of them.
+
+Some websites, such as **GitHub** or any **Google subdomain**, may completely block uWicLet due to strict **Content Security Policies** that are difficult to bypass. However, these cases are rare.
+
 ---
-I hope this helps! :)
+
+Enjoy using **uWicLet**!
+
