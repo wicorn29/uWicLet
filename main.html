@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>uWicLet</title>
     <style>
-
+        /* Keep original CSS */
         body {
             font-family: sans-serif;
             margin: 0;
@@ -46,18 +46,18 @@
             align-items: center;
         }
 
-	#newItemInput {
-   	    width: 210px;
-  	    padding: 5px;
-	    border-radius: 5px;
-	    margin-left: 0;
-      	    font-family: 'Varela Round', sans-serif;
+        #newItemInput {
+            width: 210px;
+            padding: 5px;
+            border-radius: 5px;
+            margin-left: 0;
+            font-family: 'Varela Round', sans-serif;
             user-select: none;
-	}
-    
-	#newItemInput::placeholder {
-	    text-align: center;
-	}
+        }
+
+        #newItemInput::placeholder {
+            text-align: center;
+        }
 
         .item-list-container {
             max-height: calc(100vh - 75px);
@@ -136,37 +136,21 @@
 <body>
     <div class="header">
         <div id="logo-container">
-	<span id="itemListText">Chromebrew: uWicLet edition</span>
+            <span id="itemListText">Chromebrew: uWicLet edition</span>
         </div>
         <div id="itemInputContainer">
-            <input type="text" id="newItemInput" placeholder="Enter the bookmarklet code here"  autocomplete="off" no-store>
+            <input type="text" id="newItemInput" placeholder="Enter the bookmarklet code here" autocomplete="off" no-store>
             <button id="addItemButton">Add Bookmarklet</button>
         </div>
     </div>
 
     <div class="overlay" id="overlay"></div>
     <center>
-    
-    
-    
-    
-    <li class="item"><button class="remove-button" disabled>ANNOUNCMENTS:</button><button class="edit-item-button" disabled>i love you</button></li>
-    
-    
-    
-    <p>Made with hate by Wicorn29.</p>
-    
+        <p>Made with hate by Wicorn29.</p>
     </center>
-    
-    
-    
-    
-    
-    
-    
+
     <div class="item-list-container">
         <ul id="itemList" class="item-list"></ul>
-        
     </div>
 
     <script>
@@ -178,24 +162,24 @@
             const overlay = document.getElementById('overlay');
 
             addButton.addEventListener('click', () => {
-		async function getBookmarkletName() {
-			addButton.blur();
-			const displayValue = await customPrompt('What do you want the bookmarklet to be called?');
-			console.log('Bookmarklet name:', displayValue);
-			if (displayValue === null) {
- 		               return;
-  			}
+                async function getBookmarkletName() {
+                    addButton.blur();
+                    const displayValue = await customPrompt('What do you want the bookmarklet to be called?');
+                    console.log('Bookmarklet name:', displayValue);
+                    if (displayValue === null) {
+                        return;
+                    }
 
-                	const itemValue = newItemInput.value.trim();
-                	if (!itemValue) {
-               			return;
-                	}
+                    const itemValue = newItemInput.value.trim();
+                    if (!itemValue) {
+                        return;
+                    }
 
-                	addItemToList(displayValue, itemValue);
-                	saveItemsToLocalStorage();
-                	newItemInput.value = '';
-		}
-		getBookmarkletName();     
+                    addItemToList(displayValue, itemValue);
+                    saveItemsToCookies();
+                    newItemInput.value = '';
+                }
+                getBookmarkletName();
             });
 
             function addItemToList(displayValue, itemValue) {
@@ -217,255 +201,197 @@
                 removeButton.textContent = 'Remove';
                 removeButton.addEventListener('click', () => {
                     itemList.removeChild(newItem);
-                    saveItemsToLocalStorage();
+                    saveItemsToCookies();
                 });
 
                 const editDisplayButton = document.createElement('button');
                 editDisplayButton.className = 'edit-display-button';
                 editDisplayButton.textContent = 'Edit Name';
                 editDisplayButton.addEventListener('click', () => {
-                async function getDisplayValue() {
-		    const newDisplayValue = await customPrompt('Enter the new name:', '', itemButton.textContent);
-		    if (newDisplayValue !== null) {
-                        itemButton.textContent = newDisplayValue;
-                        saveItemsToLocalStorage();
+                    async function getDisplayValue() {
+                        const newDisplayValue = await customPrompt('Enter the new name:', '', itemButton.textContent);
+                        if (newDisplayValue !== null) {
+                            itemButton.textContent = newDisplayValue;
+                            saveItemsToCookies();
+                        }
                     }
-		}
-        		editDisplayButton.blur();
-                getDisplayValue(); 
+                    editDisplayButton.blur();
+                    getDisplayValue();
                 });
 
                 const editItemButton = document.createElement('button');
                 editItemButton.className = 'edit-item-button';
                 editItemButton.textContent = 'Edit Bookmarklet';
                 editItemButton.addEventListener('click', () => {
-                async function getItemValue() {
-                    const newItemValue = await customPrompt('Enter the new bookmarklet code:', '', itemButton.title);
-		    if (newItemValue !== null) {
-                    	itemButton.title = newItemValue;
-                    	saveItemsToLocalStorage();
+                    async function getItemValue() {
+                        const newItemValue = await customPrompt('Enter the new bookmarklet code:', '', itemButton.title);
+                        if (newItemValue !== null) {
+                            itemButton.title = newItemValue;
+                            saveItemsToCookies();
+                        }
                     }
-		}
-                editItemButton.blur();
-                getItemValue();
+                    editItemButton.blur();
+                    getItemValue();
                 });
+
+                // Adding "Auto Execute" checkbox
+                const autoExecuteCheckbox = document.createElement('input');
+                autoExecuteCheckbox.type = 'checkbox';
+                autoExecuteCheckbox.className = 'auto-execute-checkbox';
+                autoExecuteCheckbox.addEventListener('change', () => {
+                    saveItemsToCookies();
+                });
+
+                // Load checkbox state from cookies if available
+                const storedItems = getItemsFromCookies();
+                storedItems.forEach(item => {
+                    if (item.display === displayValue) {
+                        autoExecuteCheckbox.checked = item.autoExecute || false;
+                    }
+                });
+
+                const autoExecuteLabel = document.createElement('label');
+                autoExecuteLabel.textContent = 'Auto Execute';
+                autoExecuteLabel.appendChild(autoExecuteCheckbox);
 
                 newItem.appendChild(itemButton);
                 newItem.appendChild(removeButton);
                 newItem.appendChild(editDisplayButton);
                 newItem.appendChild(editItemButton);
+                newItem.appendChild(autoExecuteLabel);
 
                 itemList.appendChild(newItem);
             }
 
-            function saveItemsToLocalStorage() {
-                const items = Array.from(document.querySelectorAll('.item-button')).map(button => {
+            function saveItemsToCookies() {
+                const items = Array.from(document.querySelectorAll('.item')).map(item => {
+                    const itemButton = item.querySelector('.item-button');
+                    const autoExecuteCheckbox = item.querySelector('.auto-execute-checkbox');
                     return {
-                        display: button.textContent,
-                        item: button.title,
+                        display: itemButton.textContent,
+                        item: itemButton.title,
+                        autoExecute: autoExecuteCheckbox.checked
                     };
                 });
-                localStorage.setItem('items', JSON.stringify(items));
+                document.cookie = "items=" + JSON.stringify(items) + ";path=/";
+            }
+
+            function getItemsFromCookies() {
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    const [name, value] = cookie.trim().split('=');
+                    if (name === 'items') {
+                        return JSON.parse(decodeURIComponent(value));
+                    }
+                }
+                return [];
             }
 
             function runScript(selectedItemValue) {
                 overlay.style.display = 'flex';
-		    
                 setTimeout(() => {
-			window.parent.postMessage("run:" + selectedItemValue, '*');
+                    window.parent.postMessage("run:" + selectedItemValue, '*');
                 }, 500);
             }
 
-            const storedItems = localStorage.getItem('items');
-            if (storedItems) {
-                const parsedItems = JSON.parse(storedItems);
-                parsedItems.forEach(item => {
-                    addItemToList(item.display, item.item);
-                });
-            }
+            const storedItems = getItemsFromCookies();
+            storedItems.forEach(item => {
+                addItemToList(item.display, item.item);
+            });
         });
-        
-        function customAlert(message) {
-		const overlay = document.createElement('div');
-		overlay.style.position = 'fixed';
-		overlay.style.top = '0';
-		overlay.style.left = '0';
- 		overlay.style.width = '100%';
- 		overlay.style.height = '100%';
- 		overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-  		overlay.style.display = 'flex';
-  		overlay.style.justifyContent = 'center';
-   		overlay.style.alignItems = 'center';
-  		overlay.style.zIndex = '1000';
-   		overlay.style.opacity = '0';
-   		overlay.style.transition = 'opacity 0.3s ease';
 
-   		const alertBox = document.createElement('div');
-		alertBox.style.backgroundColor = 'white';
-		alertBox.style.padding = '20px';
-		alertBox.style.borderRadius = '8px';
-		alertBox.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
-		alertBox.style.width = '350px';
-		alertBox.style.height = '200px';
-		alertBox.style.textAlign = 'center';
-		alertBox.style.fontFamily = '"Varela Round", sans-serif';
-		alertBox.style.transform = 'scale(0.8)';
-		alertBox.style.transition = 'transform 0.3s ease';
-		alertBox.style.display = 'flex';
-		alertBox.style.flexDirection = 'column';
-		alertBox.style.alignItems = 'center';
-		alertBox.style.justifyContent = 'center';
+        function customPrompt(message, callback, defaultValue = '') {
+            return new Promise((resolve, reject) => {
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                overlay.style.display = 'flex';
+                overlay.style.justifyContent = 'center';
+                overlay.style.alignItems = 'center';
+                overlay.style.zIndex = '1000';
+                overlay.style.opacity = '0';
+                overlay.style.transition = 'opacity 0.3s ease';
 
-   		const alertMessage = document.createElement('p');
-   		alertMessage.textContent = message;
-    	 	alertMessage.style.margin = '0 0 20px';
-    	 	alertMessage.style.fontSize = '20px';
-    	 	alertMessage.style.color = '#333';
-                alertMessage.style.userSelect = 'none';
-    	 	alertBox.appendChild(alertMessage);
+                const promptBox = document.createElement('div');
+                promptBox.style.backgroundColor = 'white';
+                promptBox.style.padding = '20px';
+                promptBox.style.borderRadius = '8px';
+                promptBox.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                promptBox.style.width = '350px';
+                promptBox.style.height = '200px';
+                promptBox.style.textAlign = 'center';
+                promptBox.style.fontFamily = '"Varela Round", sans-serif';
+                promptBox.style.transform = 'scale(0.8)';
+                promptBox.style.transition = 'transform 0.3s ease';
+                promptBox.style.display = 'flex';
+                promptBox.style.flexDirection = 'column';
+                promptBox.style.alignItems = 'center';
+                promptBox.style.justifyContent = 'center';
 
-    	 	const okButton = document.createElement('button');
-    	 	okButton.textContent = 'OK';
-    	 	okButton.style.padding = '10px 20px';
-    	 	okButton.style.border = 'none';
-    	 	okButton.style.borderRadius = '5px';
-    	 	okButton.style.backgroundColor = 'green';
-    	 	okButton.style.color = 'white';
-    	 	okButton.style.cursor = 'pointer';
+                const promptMessage = document.createElement('p');
+                promptMessage.textContent = message;
+                promptMessage.style.margin = '0 0 20px';
+                promptMessage.style.fontSize = '20px';
+                promptMessage.style.color = '#333';
+                promptMessage.style.userSelect = 'none';
+                promptBox.appendChild(promptMessage);
+
+                const inputField = document.createElement('input');
+                inputField.type = 'text';
+                inputField.value = defaultValue;
+                inputField.style.width = '90%';
+                inputField.style.padding = '10px';
+                inputField.style.marginBottom = '20px';
+                inputField.style.border = '1px solid #ccc';
+                inputField.style.borderRadius = '5px';
+                inputField.style.fontFamily = '"Varela Round", sans-serif';
+                promptBox.appendChild(inputField);
+
+                const okButton = document.createElement('button');
+                okButton.textContent = 'OK';
+                okButton.style.padding = '10px 20px';
+                okButton.style.border = 'none';
+                okButton.style.borderRadius = '5px';
+                okButton.style.backgroundColor = 'green';
+                okButton.style.color = 'white';
+                okButton.style.cursor = 'pointer';
                 okButton.style.fontFamily = '"Varela Round", sans-serif';
                 okButton.style.userSelect = 'none';
 
-    	 	const closeAlert = () => {
-       			overlay.style.opacity = '0';
-        		alertBox.style.transform = 'scale(0.8)';
-        		document.body.style.filter = 'none';
-        		setTimeout(() => document.body.removeChild(overlay), 300);
-        		document.removeEventListener('keydown', closeAlertEnter);
-    		};
+                okButton.addEventListener('click', () => {
+                    const value = inputField.value;
+                    overlay.style.opacity = '0';
+                    promptBox.style.transform = 'scale(0.8)';
+                    document.body.style.filter = 'none';
+                    setTimeout(() => document.body.removeChild(overlay), 300);
+                    resolve(value);
+                });
 
-    		okButton.addEventListener('click', closeAlert);
-   		function closeAlertEnter(event) {
-  			if (event.key === 'Enter') {
-    				closeAlert();
-  			}
-		}
-		document.addEventListener('keydown', closeAlertEnter);
+                inputField.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const value = inputField.value;
+                        overlay.style.opacity = '0';
+                        promptBox.style.transform = 'scale(0.8)';
+                        document.body.style.filter = 'none';
+                        setTimeout(() => document.body.removeChild(overlay), 300);
+                        resolve(value);
+                    }
+                });
 
-    		alertBox.appendChild(okButton);
-    	 	overlay.appendChild(alertBox);
-    	 	document.body.appendChild(overlay);
+                promptBox.appendChild(okButton);
+                overlay.appendChild(promptBox);
+                document.body.appendChild(overlay);
 
-       	 	setTimeout(() => {
-     	 	   	overlay.style.opacity = '1';
-     	       		alertBox.style.transform = 'scale(1)';
-    	 	}, 10);
-	}
-
-	function customPrompt(message, callback, defaultValue = '') {
-    		return new Promise((resolve, reject) => {
-        		const overlay = document.createElement('div');
-        		overlay.style.position = 'fixed';
-        		overlay.style.top = '0';
-        		overlay.style.left = '0';
-        		overlay.style.width = '100%';
-        		overlay.style.height = '100%';
-        		overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        		overlay.style.display = 'flex';
-        		overlay.style.justifyContent = 'center';
-        		overlay.style.alignItems = 'center';
-        		overlay.style.zIndex = '1000';
-        		overlay.style.opacity = '0';
-        		overlay.style.transition = 'opacity 0.3s ease';
-
-        		const promptBox = document.createElement('div');
-        		promptBox.style.backgroundColor = 'white';
-			promptBox.style.padding = '20px';
-			promptBox.style.borderRadius = '8px';
-			promptBox.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
-			promptBox.style.width = '350px';
-			promptBox.style.height = '200px';
-			promptBox.style.textAlign = 'center';
-			promptBox.style.fontFamily = '"Varela Round", sans-serif';
-			promptBox.style.transform = 'scale(0.8)';
-			promptBox.style.transition = 'transform 0.3s ease';
-			promptBox.style.display = 'flex';
-			promptBox.style.flexDirection = 'column';
-			promptBox.style.alignItems = 'center';
-			promptBox.style.justifyContent = 'center';
-
-        		const promptMessage = document.createElement('p');
-        		promptMessage.textContent = message;
-        		promptMessage.style.margin = '0 0 20px';
-        		promptMessage.style.fontSize = '20px';
-        		promptMessage.style.color = '#333';
-                        promptMessage.style.userSelect = 'none';
-        		promptBox.appendChild(promptMessage);
-
-        		const inputField = document.createElement('input');
-        		inputField.type = 'text';
-        		inputField.value = defaultValue;
-        		inputField.style.width = '90%';
-        		inputField.style.padding = '10px';
-        		inputField.style.marginBottom = '20px';
-        		inputField.style.border = '1px solid #ccc';
-        		inputField.style.borderRadius = '5px';
-        		inputField.style.fontFamily = '"Varela Round", sans-serif';
-        		promptBox.appendChild(inputField);
-
-        		const okButton = document.createElement('button');
-        		okButton.textContent = 'OK';
-        		okButton.style.padding = '10px 20px';
-        		okButton.style.border = 'none';
-        		okButton.style.borderRadius = '5px';
-        		okButton.style.backgroundColor = 'green';
-        		okButton.style.color = 'white';
-        		okButton.style.cursor = 'pointer';
-        		okButton.style.fontFamily = '"Varela Round", sans-serif';
-                        okButton.style.userSelect = 'none';
-
-        		okButton.addEventListener('click', () => {
-            			const value = inputField.value;
-            			overlay.style.opacity = '0';
-            			promptBox.style.transform = 'scale(0.8)';
-            			document.body.style.filter = 'none';
-            			setTimeout(() => document.body.removeChild(overlay), 300);
-            			resolve(value);
-        		});
-
-			inputField.addEventListener('keydown', (e) => {
-           			 if (e.key === 'Enter') {
-                			const value = inputField.value;
-                			overlay.style.opacity = '0';
-                			promptBox.style.transform = 'scale(0.8)';
-                			document.body.style.filter = 'none';
-                			setTimeout(() => document.body.removeChild(overlay), 300);
-                			resolve(value);
-            			 }
-        		});
-
-        		promptBox.appendChild(okButton);
-        		overlay.appendChild(promptBox);
-        		document.body.appendChild(overlay);
-
-        		setTimeout(() => {
-            			overlay.style.opacity = '1';
-            			promptBox.style.transform = 'scale(1)';
-        		}, 10);
-
-        		if (!callback) {
-            			return new Promise((resolve, reject) => {
-                			okButton.addEventListener('click', () => {
-                    				const value = inputField.value;
-                    				overlay.style.opacity = '0';
-                    				promptBox.style.transform = 'scale(0.8)';
-                    				document.body.style.filter = 'none';
-                    				setTimeout(() => document.body.removeChild(overlay), 300);
-                    				resolve(value);
-                			});
-            			});
-        		}
-    		});
-	}
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    promptBox.style.transform = 'scale(1)';
+                }, 10);
+            });
+        }
     </script>
 </body>
 </html>
