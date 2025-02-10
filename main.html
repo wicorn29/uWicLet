@@ -58,6 +58,16 @@
 	#newItemInput::placeholder {
 	    text-align: center;
 	}
+    
+     #addItemButton, #consoleButton {
+            background-color: #008000;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Varela Round', sans-serif;
+            user-select: none;
+        }
 
         .item-list-container {
             max-height: calc(100vh - 75px);
@@ -141,6 +151,29 @@
         <div id="itemInputContainer">
             <input type="text" id="newItemInput" placeholder="Enter the bookmarklet code here"  autocomplete="off" no-store>
             <button id="addItemButton">Add Bookmarklet</button>
+        </div>
+                <div class="top-menu">
+            <button id="consoleButton" onclick="
+    var userInput = prompt(
+        '⚠ WARNING ⚠ This is the system console for your Chromebook. Misuse can and WILL brick your device permanently. Only use this terminal if you are absolutely certain of what you are doing. Accessing this console gives full control over all data on the device, and improper use can destroy everything. Never let anyone else access this terminal unless you want them to have full access to your data and potentially ruin your device. To proceed, type the following exactly: I want to brick my device'
+    ); 
+    if (userInput === 'I want to brick my device') { 
+        var confirmInput = confirm('⚠ ARE YOU SURE? ⚠ This action will give you full access to the device, and any mistake could completely destroy your data. If you are unsure, click Cancel. If you proceed, you will not be able to undo this action. This is a serious risk to your device. Click OK to continue, or Cancel to abort.');
+        if (confirmInput) {
+            var finalConfirm = confirm('⚠ FINAL WARNING ⚠ You are about to access a powerful terminal. Are you absolutely certain? This will give you the ability to permanently destroy your device. Click OK to proceed, or Cancel to stop now.');
+            if (finalConfirm) {
+                alert('Chromebrew runs in a PDF document. (no, i am not joking) In order to acess the terminal, you need to open the PDF file chromebook runs in. Clicking OK will download your system to your chromebook. Open it to access the terminal, PLEASE proceed with caution!');
+                window.open('https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/chromebrew/chromebrew.pdf', '_blank'); 
+            } else {
+                alert('Action canceled. You will not access the terminal.');
+            }
+        } else {
+            alert('Action canceled. You will not access the terminal.');
+        }
+    } else { 
+        alert('Incorrect input. Redirect canceled.'); 
+    }
+">Console</button>
         </div>
     </div>
 
