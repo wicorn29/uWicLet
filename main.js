@@ -101,7 +101,7 @@ setTimeout(() => {
             
             // Cog button (Settings)
             const cogButton = document.createElement("button");
-            cogButton.innerHTML = "&#9881;";  // Unicode for the gear/cog icon
+            cogButton.innerHTML = "⛭";  // Unicode for the gear/cog icon
             cogButton.style.cssText = `
                 position: absolute;
                 top: 50%;
