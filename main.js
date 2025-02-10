@@ -47,6 +47,7 @@ setTimeout(() => {
                 top: 40px;
                 display: block;
                 user-select: none;
+                overflow: auto; /* Allow scroll in iframe */
             `;
 
             fetch("https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/main.html")
@@ -56,6 +57,11 @@ setTimeout(() => {
                     uBlobeHtml.open();
                     uBlobeHtml.write(html);
                     uBlobeHtml.close();
+
+                    // Make the iframe content scrollable by setting the body overflow
+                    const iframeBody = uBlobeHtml.querySelector('body');
+                    iframeBody.style.overflowY = 'auto';  // Make vertical scrollable
+                    iframeBody.style.height = '100%'; // Ensure it takes the full height of the iframe
                 });
 
             const bar = document.createElement("div");
