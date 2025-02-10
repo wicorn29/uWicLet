@@ -31,6 +31,9 @@ setTimeout(() => {
                 padding: 0px 0px;
                 resize: both; /* Enable resize */
                 overflow: hidden; /* Prevent content overflow while resizing */
+                min-width: 600px; /* Set minimum width */
+                min-height: 400px; /* Set minimum height */
+                border-bottom-right-radius: 0px;
             `;
             blobFrame = document.createElement("iframe");
             blobFrame.setAttribute("tabindex", "0");
