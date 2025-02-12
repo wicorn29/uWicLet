@@ -1,10 +1,4 @@
 setTimeout(() => {
-    // Display the clipboard contents before any other logic
-    navigator.clipboard.readText().then(text => {
-        console.warn("Clipboard contents:", text);
-    }).catch(err => {
-        console.warn("Failed to read clipboard contents:", err);
-    });
 
     let blobFrame = null;
     let blobFrameContainer = null;
