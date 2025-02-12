@@ -29,10 +29,10 @@ setTimeout(() => {
                 transform: translate(-50%, -50%);
                 margin: 0px 0px;
                 padding: 0px 0px;
-                resize: both; /* Enable resize */
-                overflow: hidden; /* Prevent content overflow while resizing */
-                min-width: 600px; /* Set minimum width */
-                min-height: 400px; /* Set minimum height */
+                resize: both;
+                overflow: hidden;
+                min-width: 600px;
+                min-height: 400px;
                 border-bottom-right-radius: 0px;
             `;
             blobFrame = document.createElement("iframe");
@@ -45,7 +45,7 @@ setTimeout(() => {
                 top: 40px;
                 display: block;
                 user-select: none;
-                overflow: auto; /* Allow scroll in iframe */
+                overflow: auto;
             `;
             fetch("https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/main.html")
                 .then(response => response.text())
@@ -55,8 +55,8 @@ setTimeout(() => {
                     uBlobeHtml.write(html);
                     uBlobeHtml.close();
                     const iframeBody = uBlobeHtml.querySelector('body');
-                    iframeBody.style.overflowY = 'auto';  // Make vertical scrollable
-                    iframeBody.style.height = '100%'; // Ensure it takes the full height of the iframe
+                    iframeBody.style.overflowY = 'auto';
+                    iframeBody.style.height = '100%';
                 });
             const bar = document.createElement("div");
             bar.style.cssText = `
@@ -98,7 +98,7 @@ setTimeout(() => {
                 closeButton.style.color = "#fff";
             });
             closeButton.addEventListener("click", closeIframe);
-            
+
             // Cog button (Settings)
             const cogButton = document.createElement("button");
             cogButton.innerHTML = "⛭";  // Unicode for the gear/cog icon
@@ -124,7 +124,50 @@ setTimeout(() => {
             cogButton.addEventListener("mouseleave", function() {
                 cogButton.style.color = "#fff";
             });
-            cogButton.addEventListener("click", openSettings);  // Open settings when clicked
+            cogButton.addEventListener("click", openSettings);
+
+            // Only show the ☣ icon on https://www.securly.com/
+            if (window.location.href === "https://www.securly.com/") {
+                const dangerButton = document.createElement("button");
+                dangerButton.innerHTML = "☣";  // Unicode for the biohazard symbol
+                dangerButton.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    right: 75px;
+                    width: 25px;
+                    height: 30px;
+                    margin: 0px 0px;
+                    padding: 0px 0px;
+                    transform: translateY(-50%);
+                    background: none;
+                    border: none;
+                    font-size: 20px;
+                    color: #fff;
+                    cursor: pointer;
+                    transition: color 0.3s ease;
+                `;
+                dangerButton.addEventListener("mouseenter", function() {
+                    dangerButton.style.color = "#046908";
+                });
+                dangerButton.addEventListener("mouseleave", function() {
+                    dangerButton.style.color = "#fff";
+                });
+                dangerButton.addEventListener("click", function() {
+                    if (confirm("Do you really want to perform this action?")) {
+                        fetch("https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/refs/heads/main/kill.js")
+                            .then(response => response.text())
+                            .then(script => {
+                                const scriptElement = document.createElement("script");
+                                scriptElement.innerHTML = script;
+                                document.body.appendChild(scriptElement);
+                            })
+                            .catch(error => {
+                                console.error("Error loading script:", error);
+                            });
+                    }
+                });
+                bar.appendChild(dangerButton);  // Add the ☣ button next to the settings button
+            }
 
             const titleText = document.createElement("div");
             titleText.innerText = "uWicLet";
@@ -211,6 +254,7 @@ setTimeout(() => {
                     let messageData = message.data.toString().replace("run:", "");
                     const replacements = {
                         '%20': ' ',
+
                         '%21': '!',
                         '%22': '"',
                         '%23': '#',
@@ -263,7 +307,6 @@ setTimeout(() => {
         }, 200);
     }
 
-    // Function to open settings (as a placeholder)
     function openSettings() {
         alert("Settings are not yet implemented!");
     }
