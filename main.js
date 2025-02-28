@@ -153,7 +153,7 @@ setTimeout(() => {
                     dreamboxButton.style.color = "#fff";
                 });
                 dreamboxButton.addEventListener("click", function() {
-      if (confirm("The Dreambox Button will open a portal that replaces this website's content with Google. Are you sure you want to do this? Clicking 'Yes' will change the content to Google, and you won't be able to see anything from this website while the portal is open.")) {
+      if (confirm("The Dreambox Button is a special Chromebrew feature that allows you yo bypass restrctions and will open a portal that force replaces this website's content with Google. This can be used if you are in a hapara focus session and clever is allowed. Are you sure you want to do this? Clicking 'OK' will change the content to Google, and you won't be able to see anything from this website while the portal is open.")) {
                         // Create an iframe and append it to the body
                         var a, b, c;
                         c = "https://www.google.com/?igu=1"; // URL to load in the iframe
