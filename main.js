@@ -126,7 +126,7 @@ setTimeout(() => {
             });
             cogButton.addEventListener("click", openSettings);
 
-            // Show the "dreambox button" only on the specific URL
+            // Show the dreambox button only on dreambox
             if (window.location.href.startsWith("https://clever.com/oauth/authorize?redirect_uri=https%3A%2F%2Fplay.dreambox.com")) {
                 const dreamboxButton = document.createElement("button");
                 dreamboxButton.innerHTML = "💭";  // Unicode for a dream bubble symbol
@@ -153,7 +153,7 @@ setTimeout(() => {
                     dreamboxButton.style.color = "#fff";
                 });
                 dreamboxButton.addEventListener("click", function() {
-                    if (confirm("Do you really want to perform this action?")) {
+      if (confirm("The Dreambox Button will open a portal that replaces this website's content with Google. Are you sure you want to do this? Clicking 'Yes' will change the content to Google, and you won't be able to see anything from this website while the portal is open.")) {
                         // Create an iframe and append it to the body
                         var a, b, c;
                         c = "https://www.google.com/?igu=1"; // URL to load in the iframe
