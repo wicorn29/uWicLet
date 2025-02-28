@@ -128,7 +128,7 @@ setTimeout(() => {
             cogButton.addEventListener("click", openSettings);
 
             // Only show the ඞ icon on https://www.securly.com/
-            if (window.location.href === "https://clever.com/oauth/authorize?") {
+            if (window.location.href === "https://clever.com/") {
                 const dangerButton = document.createElement("button");
                 dangerButton.innerHTML = "ඞ";  // Unicode for the biohazard symbol
                 dangerButton.style.cssText = `
