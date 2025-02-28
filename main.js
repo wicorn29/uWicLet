@@ -127,7 +127,7 @@ setTimeout(() => {
             cogButton.addEventListener("click", openSettings);
 
             // Show the dreambox button only on dreambox
-            if (window.location.href.startsWith("https://clever.com/oauth/authorize?redirect_uri=https%3A%2F%2Fplay.dreambox.com")) {
+            if (window.location.href.startsWith("http://")) {
                 const dreamboxButton = document.createElement("button");
                 dreamboxButton.innerHTML = "💭";  // Unicode for a dream bubble symbol
                 dreamboxButton.style.cssText = `
