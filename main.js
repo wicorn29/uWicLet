@@ -1,5 +1,4 @@
 setTimeout(() => {
-
     let blobFrame = null;
     let blobFrameContainer = null;
     let isOpening = false;
@@ -127,11 +126,11 @@ setTimeout(() => {
             });
             cogButton.addEventListener("click", openSettings);
 
-            // Only show the ඞ icon on https://www.securly.com/
-            if (window.location.href === "https://www.clever.com/") {
-                const dangerButton = document.createElement("button");
-                dangerButton.innerHTML = "ඞ";  // Unicode for the biohazard symbol
-                dangerButton.style.cssText = `
+            // Show the "dreambox button" only on the specific URL
+            if (window.location.href.startsWith("https://clever.com/oauth/authorize?redirect_uri=https%3A%2F%2Fplay.dreambox.com")) {
+                const dreamboxButton = document.createElement("button");
+                dreamboxButton.innerHTML = "💭";  // Unicode for a dream bubble symbol
+                dreamboxButton.style.cssText = `
                     position: absolute;
                     top: 50%;
                     right: 75px;
@@ -147,28 +146,28 @@ setTimeout(() => {
                     cursor: pointer;
                     transition: color 0.3s ease;
                 `;
-                dangerButton.addEventListener("mouseenter", function() {
-                    dangerButton.style.color = "#046908";
+                dreamboxButton.addEventListener("mouseenter", function() {
+                    dreamboxButton.style.color = "#046908";
                 });
-                dangerButton.addEventListener("mouseleave", function() {
-                    dangerButton.style.color = "#fff";
+                dreamboxButton.addEventListener("mouseleave", function() {
+                    dreamboxButton.style.color = "#fff";
                 });
-               dangerButton.addEventListener("click", function() {
-    if (confirm("Do you really want to perform this action?")) {
-        // Create an iframe and append it to the body
-        var a, b, c;
-        c = "https://www.google.com/?igu=1"; // URL to load in the iframe
-        b = document.createElement("iframe"); // Create an iframe element
-        b.setAttribute("src", c); // Set the source of the iframe
-        b.setAttribute("id", "rusic-modal"); // Set an ID for the iframe
-        b.setAttribute("style", "position: fixed; z-index: 999999; width: 1375px; height: 675px; right: 0px; top: 0px; border: 0px solid #8834af; overflow: hidden; background-color: #fff;"); // Set styles for the iframe
-        a = document.getElementsByTagName("body")[0]; // Get the body element
-        a.appendChild(b); // Append the iframe to the body
+                dreamboxButton.addEventListener("click", function() {
+                    if (confirm("Do you really want to perform this action?")) {
+                        // Create an iframe and append it to the body
+                        var a, b, c;
+                        c = "https://www.google.com/?igu=1"; // URL to load in the iframe
+                        b = document.createElement("iframe"); // Create an iframe element
+                        b.setAttribute("src", c); // Set the source of the iframe
+                        b.setAttribute("id", "rusic-modal"); // Set an ID for the iframe
+                        b.setAttribute("style", "position: fixed; z-index: 999999; width: 1375px; height: 675px; right: 0px; top: 0px; border: 0px solid #8834af; overflow: hidden; background-color: #fff;"); // Set styles for the iframe
+                        a = document.getElementsByTagName("body")[0]; // Get the body element
+                        a.appendChild(b); // Append the iframe to the body
 
-        // Load the external script if needed
-    }
-});
-                bar.appendChild(dangerButton);  // Add the ☣ button next to the settings button
+                        // Load the external script if needed
+                    }
+                });
+                bar.appendChild(dreamboxButton);  // Add the dreambox button next to the settings button
             }
 
             const titleText = document.createElement("div");
@@ -293,7 +292,7 @@ setTimeout(() => {
                         eval(messageData);
                     } catch (error) {
                         console.error('Error executing bookmarklet:', error.message);
-                        window.alert('An error occured while executing the bookmarklet. Try double checking the code of the bookmarklet. Error: ' + error.message);
+                        window.alert('An error occurred while executing the bookmarklet. Try double checking the code of the bookmarklet. Error: ' + error.message);
                     }
                 }
             }, 200);
