@@ -154,17 +154,15 @@ setTimeout(() => {
                 });
                 dreamboxButton.addEventListener("click", function() {
       if (confirm("The Dreambox Button is a special Chromebrew feature that allows you yo bypass restrctions and will open a portal that force replaces this website's content with Google. This can be used if you are in a hapara focus session and clever is allowed. Are you sure you want to do this? Clicking 'OK' will change the content to Google, and you won't be able to see anything from this website while the portal is open.")) {
-                        // Create an iframe and append it to the body
+                        // Create an dreambox and append it to the body
                         var a, b, c;
                         c = "https://www.google.com/?igu=1"; // URL to load in the iframe
                         b = document.createElement("iframe"); // Create an iframe element
                         b.setAttribute("src", c); // Set the source of the iframe
                         b.setAttribute("id", "rusic-modal"); // Set an ID for the iframe
-                        b.setAttribute("style", "position: fixed; z-index: 999999; width: 1375px; height: 675px; right: 0px; top: 0px; border: 0px solid #8834af; overflow: hidden; background-color: #fff;"); // Set styles for the iframe
+                        b.setAttribute("style", "position: fixed; z-index: 999999; width: 100%; height: 100vh; left: 0; top: 0; border: none; overflow: hidden; background-color: #fff;"); // Adjust styles for full screen
                         a = document.getElementsByTagName("body")[0]; // Get the body element
                         a.appendChild(b); // Append the iframe to the body
-
-                        // Load the external script if needed
                     }
                 });
                 bar.appendChild(dreamboxButton);  // Add the dreambox button next to the settings button
