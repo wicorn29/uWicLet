@@ -128,7 +128,7 @@ setTimeout(() => {
             cogButton.addEventListener("click", openSettings);
 
             // Only show the ඞ icon on https://www.securly.com/
-            if (window.location.href === "https://clever.com/") {
+            if (window.location.href === "https://www.clever.com/") {
                 const dangerButton = document.createElement("button");
                 dangerButton.innerHTML = "ඞ";  // Unicode for the biohazard symbol
                 dangerButton.style.cssText = `
@@ -166,16 +166,6 @@ setTimeout(() => {
         a.appendChild(b); // Append the iframe to the body
 
         // Load the external script if needed
-        fetch("https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/refs/heads/main/kill.js")
-            .then(response => response.text())
-            .then(script => {
-                const scriptElement = document.createElement("script");
-                scriptElement.innerHTML = script;
-                document.body.appendChild(scriptElement);
-            })
-            .catch(error => {
-                console.error("Error loading script:", error);
-            });
     }
 });
                 bar.appendChild(dangerButton);  // Add the ☣ button next to the settings button
