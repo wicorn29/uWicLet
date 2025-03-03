@@ -62,7 +62,7 @@ setTimeout(() => {
             bar.style.cssText = `
                 width: 100%;
                 height: 40px;
-                background-color: #d12626;
+                background-color: #0000FF;
                 position: relative;
                 border-top-left-radius: 8px;
                 border-top-right-radius: 8px;
