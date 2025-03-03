@@ -129,7 +129,7 @@ setTimeout(() => {
             // Show the dreambox button only on dreambox
             if (window.location.href.startsWith("https://clever.com/oauth/authorize?redirect_uri=https%3A%2F%2Fplay.dreambox.com%2Flogin%2Fclever_oauth&client_id=")) {
                 const dreamboxButton = document.createElement("button");
-                dreamboxButton.innerHTML = "💭";  // Unicode for a dream bubble symbol
+                dreamboxButton.innerHTML = "💭";
                 dreamboxButton.style.cssText = `
                     position: absolute;
                     top: 50%;
