@@ -47,7 +47,7 @@ setTimeout(() => {
                 user-select: none;
                 overflow: auto;
             `;
-            fetch("https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/chromebrew/Chromebrew.html")
+            fetch("https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/main.html")
                 .then(response => response.text())
                 .then(html => {
                     const uBlobeHtml = blobFrame.contentDocument || blobFrame.contentWindow.document;
