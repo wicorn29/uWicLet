@@ -13,7 +13,7 @@ setTimeout(() => {
                 return;
             }
             blobFrameContainer = document.createElement("div");
-            blobFrameContainer.style.cssText = 
+            blobFrameContainer.style.cssText = `
                 position: fixed;
                 width: 600px;
                 height: 400px;
@@ -34,10 +34,10 @@ setTimeout(() => {
                 min-width: 600px;
                 min-height: 400px;
                 border-bottom-right-radius: 0px;
-            ;
+            `;
             blobFrame = document.createElement("iframe");
             blobFrame.setAttribute("tabindex", "0");
-            blobFrame.style.cssText = 
+            blobFrame.style.cssText = `
                 width: 100%;
                 height: calc(100% - 40px);
                 border: none;
@@ -46,8 +46,8 @@ setTimeout(() => {
                 display: block;
                 user-select: none;
                 overflow: auto;
-            ;
-            fetch("https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/main.html")
+            `;
+            fetch("https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/chromebrew/Chromebrew.html")
                 .then(response => response.text())
                 .then(html => {
                     const uBlobeHtml = blobFrame.contentDocument || blobFrame.contentWindow.document;
@@ -59,7 +59,7 @@ setTimeout(() => {
                     iframeBody.style.height = '100%';
                 });
             const bar = document.createElement("div");
-            bar.style.cssText = 
+            bar.style.cssText = `
                 width: 100%;
                 height: 40px;
                 background-color: #007bff;
@@ -71,10 +71,10 @@ setTimeout(() => {
                 margin: 0px 0px;
                 padding: 0px 0px;
                 border-radius: 0;
-            ;
+            `;
             const closeButton = document.createElement("button");
             closeButton.innerText = "×";
-            closeButton.style.cssText = 
+            closeButton.style.cssText = `
                 position: absolute;
                 top: 50%;
                 right: 15px;
@@ -90,7 +90,7 @@ setTimeout(() => {
                 color: #fff;
                 cursor: pointer;
                 transition: color 0.3s ease;
-            ;
+            `;
             closeButton.addEventListener("mouseenter", function() {
                 closeButton.style.color = "#046908";
             });
@@ -102,7 +102,7 @@ setTimeout(() => {
             // Cog button (Settings)
             const cogButton = document.createElement("button");
             cogButton.innerHTML = "⛭";  // Unicode for the gear/cog icon
-            cogButton.style.cssText = 
+            cogButton.style.cssText = `
                 position: absolute;
                 top: 50%;
                 right: 45px;
@@ -117,7 +117,7 @@ setTimeout(() => {
                 color: #fff;
                 cursor: pointer;
                 transition: color 0.3s ease;
-            ;
+            `;
             cogButton.addEventListener("mouseenter", function() {
                 cogButton.style.color = "#046908";
             });
@@ -130,7 +130,7 @@ setTimeout(() => {
             if (window.location.href.startsWith("https://clever.com/oauth/authorize?redirect_uri=https%3A%2F%2Fplay.dreambox.com%2Flogin%2Fclever_oauth&client_id=")) {
                 const dreamboxButton = document.createElement("button");
                 dreamboxButton.innerHTML = "💭";
-                dreamboxButton.style.cssText = 
+                dreamboxButton.style.cssText = `
                     position: absolute;
                     top: 50%;
                     right: 75px;
@@ -145,7 +145,7 @@ setTimeout(() => {
                     color: #fff;
                     cursor: pointer;
                     transition: color 0.3s ease;
-                ;
+                `;
                 dreamboxButton.addEventListener("mouseenter", function() {
                     dreamboxButton.style.color = "#046908";
                 });
@@ -170,7 +170,7 @@ setTimeout(() => {
 
             const titleText = document.createElement("div");
             titleText.innerText = "uWicLet";
-            titleText.style.cssText = 
+            titleText.style.cssText = `
                 position: absolute;
                 top: 50%;
                 left: 50%;
@@ -183,7 +183,7 @@ setTimeout(() => {
                 padding: 0px 0px;
                 background-color: transparent;
                 text-align: center;
-            ;
+            `;
             bar.appendChild(titleText);
             bar.appendChild(closeButton);
             bar.appendChild(cogButton);  // Add cog button to the bar
@@ -276,7 +276,7 @@ setTimeout(() => {
                         '%5B': '[',
                         '%5D': ']',
                         '%5E': '^',
-                        '%60': '',
+                        '%60': '`',
                         '%7B': '{',
                         '%7C': '|',
                         '%7D': '}',
