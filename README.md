@@ -1,6 +1,8 @@
 # Welcome to uWicLet!
 
 **WARNING: uWicLet DOWNLOADS AND EXECUTES CHROMEBREW!**
+If you don't know what chromebrew is, check it out [here](https://wicorn29.net/chromebrew/).
+
 
 **uWicLet** is a tool that allows you to execute and manage bookmarklets using **uBlock Origin** by leveraging the **uBlock Run** exploit. This is especially useful if bookmarklets are blocked by your administrator or do not work on your device. **uWicLet** also includes some CSP bypassing techniques, making it functional on sites where regular **uBlock Run** or **uRun** fail, such as Blooket.
 
