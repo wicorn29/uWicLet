@@ -1,4 +1,4 @@
- javascript:(function() {  
+(function() {  
      const style = document.createElement('style');  
      style.innerHTML = `  
          body {  
