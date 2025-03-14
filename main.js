@@ -6,9 +6,9 @@ setTimeout(() => {
 
     // List of banned websites (add more as needed)
     const bannedWebsites = [
-        "https://example1.com",
-        "https://example2.com",
-        "https://example3.com"
+        "https://example.com",
+        "https://wicorn29.net",
+        "https://google.com"
     ];
 
     // Function to check if the current URL is banned
