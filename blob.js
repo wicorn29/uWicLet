@@ -1,5 +1,3 @@
-<script>
-
 /// blob.js
 var backupAlert = window.alert;
 document.addEventListener('DOMContentLoaded', function () {
@@ -52,5 +50,3 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     document.body.appendChild(script);
 });
-
-</script>
