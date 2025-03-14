@@ -40,7 +40,7 @@ function loadAndLogScripts(scripts) {
 const scripts = [
     {
         url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/w29rain.js',
-        domains: ['example.com', '*']  // Executes on "example.com" and all domains
+        domains: ['securly.com/blocked']
     },
     {
         url: 'https://raw.githubusercontent.com/anotheruser/anotherrepo/main/script1.js',
@@ -48,7 +48,7 @@ const scripts = [
     },
     {
         url: 'https://raw.githubusercontent.com/someuser/somerepo/main/script2.js',
-        domains: ['*']  // Executes on all domains
+        domains: ['e.co']  // Executes on all domains
     }
 ];
 
