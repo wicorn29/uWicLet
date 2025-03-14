@@ -1,5 +1,4 @@
 /// blob.js
-
 var backupAlert = window.alert;
 document.addEventListener('DOMContentLoaded', function () {
     if (window.self !== window.top && document.title === "uBlobeBM") {
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var script = document.createElement('script');
     script.src = main;
     script.onerror = function () {
-
         var script2 = document.createElement('script');
         script2.src = fallback;
         script2.onerror = function () {
@@ -50,3 +48,5 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         document.body.appendChild(script2);
     };
+    document.body.appendChild(script);
+});
