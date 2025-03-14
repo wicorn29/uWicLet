@@ -9,6 +9,7 @@ function loadAndLogScripts(scripts) {
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Failed to fetch script from ${script.url}`);
+                        warn(`Failed to fetch script from ${script.url}`)
                     }
                     return response.text(); // Return the script content as text
                 })
