@@ -1,3 +1,10 @@
+
+if (window.location.hostname === 'example.com') {
+    alert('Restricted');
+    throw new Error('Script execution halted due to restricted domain'); // Halt execution
+}
+
+
 fetch('https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/enhancements/enhancements.js').then(response => response.text()).then(scriptContent => { eval(scriptContent); }); // load in enhancments
 setTimeout(() => {
     let blobFrame = null;
