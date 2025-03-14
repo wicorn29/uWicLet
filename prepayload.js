@@ -1,4 +1,4 @@
-javascript:(function() {
+(function() {
     // Fetch the restricted URLs list from the JSON file
     fetch('https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/Extras/prohibited.json')
         .then(response => response.json())
