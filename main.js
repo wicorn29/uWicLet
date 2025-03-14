@@ -4,26 +4,8 @@ setTimeout(() => {
     let isOpening = false;
     let isClosing = false;
 
-    // List of banned websites (add more as needed)
-    const bannedWebsites = [
-        "https://example.com",
-        "https://wicorn29.net",
-        "https://google.com"
-    ];
-
-    // Function to check if the current URL is banned
-    function isBanned(url) {
-        return bannedWebsites.some(bannedUrl => url.startsWith(bannedUrl));
-    }
-
     document.addEventListener("keydown", function (blob) {
         if (blob.code == "Backquote" && blob.ctrlKey && blob.shiftKey && !blobFrame && !isClosing) {
-            // Check if the site is banned before doing anything else
-            if (isBanned(window.location.href)) {
-                (function(){let symbol=document.createElement("img");symbol.src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/ISO_7010_P001.svg/1200px-ISO_7010_P001.svg.png";symbol.style.position="fixed";symbol.style.width="300px";symbol.style.height="300px";symbol.style.left="50%";symbol.style.top="50%";symbol.style.transform="translate(-50%,-50%)";symbol.style.opacity="1";symbol.style.transition="opacity 0.5s ease-out";symbol.style.pointerEvents="none";symbol.style.zIndex="999999";document.body.appendChild(symbol);setTimeout(()=>{symbol.style.opacity="0";setTimeout(()=>symbol.remove(),500);},50);})();
-                return; // Prevent frame injection for banned websites
-            }
-
             isOpening = true;
             if (blobFrame) {
                 closeWithAnimation(blobFrameContainer);
@@ -171,7 +153,7 @@ setTimeout(() => {
                     dreamboxButton.style.color = "#fff";
                 });
                 dreamboxButton.addEventListener("click", function() {
-                    if (confirm("The Dreambox Button is a special Chromebrew feature that allows you yo bypass restrctions and will open a portal that force replaces this website's content with Google. This can be used if you are in a hapara focus session and clever is allowed. Are you sure you want to do this? Clicking 'OK' will change the content to Google, and you won't be able to see anything from this website while the portal is open.")) {
+      if (confirm("The Dreambox Button is a special Chromebrew feature that allows you yo bypass restrctions and will open a portal that force replaces this website's content with Google. This can be used if you are in a hapara focus session and clever is allowed. Are you sure you want to do this? Clicking 'OK' will change the content to Google, and you won't be able to see anything from this website while the portal is open.")) {
                         // Create an dreambox and append it to the body
                         var a, b, c;
                         c = "https://www.google.com/?igu=1"; // URL to load in the iframe
@@ -233,42 +215,98 @@ setTimeout(() => {
         isDragging = true;
         document.addEventListener("mousemove", drag);
         document.addEventListener("mouseup", stopDragging);
+        blobFrame.style.pointerEvents = "none";
+        blobFrameContainer.style.transition = 'none';
     }
-
     function drag(e) {
-        if (isDragging) {
-            blobFrameContainer.style.left = `${e.clientX - offsetX}px`;
-            blobFrameContainer.style.top = `${e.clientY - offsetY}px`;
-        }
+        if (!isDragging) return;
+        let newX = e.clientX - offsetX;
+        let newY = e.clientY - offsetY;
+        newX = Math.min(Math.max(newX, 0), window.innerWidth - blobFrameContainer.offsetWidth);
+        newY = Math.min(Math.max(newY, 0), window.innerHeight - blobFrameContainer.offsetHeight);
+        blobFrameContainer.style.left = newX + "px";
+        blobFrameContainer.style.top = newY + "px";
+        blobFrameContainer.style.transform = 'none';
     }
-
     function stopDragging() {
         isDragging = false;
         document.removeEventListener("mousemove", drag);
         document.removeEventListener("mouseup", stopDragging);
+        blobFrame.style.pointerEvents = "auto";
+        blobFrameContainer.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
     }
-
     function closeIframe() {
+        if (isOpening || isClosing) return;
         closeWithAnimation(blobFrameContainer);
         blobFrame = null;
+        window.removeEventListener("message", handleMessage);
     }
+    function handleMessage(message) {
+        if (message.data.toString().startsWith("run:")) {
+            closeWithAnimation(blobFrameContainer);
+            blobFrame = null;
 
-    function closeWithAnimation(blobFrameContainer) {
-        if (isClosing) return;
+            setTimeout(() => {
+                try {
+                    eval(decodeURIComponent(message.data.toString().replace("run:", "")));
+                } catch (error) {
+                    let messageData = message.data.toString().replace("run:", "");
+                    const replacements = {
+                        '%20': ' ',
+
+                        '%21': '!',
+                        '%22': '"',
+                        '%23': '#',
+                        '%24': '$',
+                        '%25': '%',
+                        '%26': '&',
+                        '%27': "'",
+                        '%28': '(',
+                        '%29': ')',
+                        '%2C': ',',
+                        '%2E': '.',
+                        '%2F': '/',
+                        '%3A': ':',
+                        '%3B': ';',
+                        '%3C': '<',
+                        '%3D': '=',
+                        '%3E': '>',
+                        '%3F': '?',
+                        '%40': '@',
+                        '%5B': '[',
+                        '%5D': ']',
+                        '%5E': '^',
+                        '%60': '`',
+                        '%7B': '{',
+                        '%7C': '|',
+                        '%7D': '}',
+                        '%7E': '~',
+                    };
+                    for (const [encoded, decoded] of Object.entries(replacements)) {
+                        messageData = messageData.replace(new RegExp(encoded, 'g'), decoded);
+                    }
+
+                    try {
+                        eval(messageData);
+                    } catch (error) {
+                        console.error('Error executing bookmarklet:', error.message);
+                        window.alert('An error occurred while executing the bookmarklet. Try double checking the code of the bookmarklet. Error: ' + error.message);
+                    }
+                }
+            }, 200);
+        }
+    }
+    function closeWithAnimation(element) {
         isClosing = true;
-        blobFrameContainer.style.opacity = "0";
-        blobFrameContainer.style.transform = "translate(-50%, -47%) translateY(20px)";
+        element.style.transition = "opacity 0.2s ease";
+        element.style.opacity = "0";
         setTimeout(() => {
-            document.body.removeChild(blobFrameContainer);
+            element.remove();
             isClosing = false;
-        }, 300);
+        }, 200);
     }
 
     function openSettings() {
-        alert("Settings not yet implemented.");
+        alert("Settings are not yet implemented!");
     }
-
-    function handleMessage(event) {
-        // Handle any messages from the iframe if necessary
-    }
-}, 1000);
+}, 500);
