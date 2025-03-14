@@ -1,5 +1,5 @@
-{
-    "prohibited": [
-        "https://example.com/",
-    ]
-}
+[
+    "example.com",
+    "restricted.com",
+    "another-restricted-site.com"
+]
