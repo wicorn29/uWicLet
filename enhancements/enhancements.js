@@ -41,7 +41,7 @@ function loadAndLogScripts(scripts) {
 const scripts = [
     {
         url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/w29rain.js',
-        domains: ['securly.com']
+        domains: ['www.securly.com']
     },
     {
         url: 'https://raw.githubusercontent.com/anotheruser/anotherrepo/main/script1.js',
