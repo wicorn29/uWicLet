@@ -9,18 +9,24 @@ function loadAndLogScripts(scripts) {
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Failed to fetch script from ${script.url}`);
-                        warn(`Failed to fetch script from ${script.url}`)
                     }
-                    return response.text(); // Return the script content as text
+                    return response.text(); // Return the script content
                 })
-                .then(scriptContent => {
-                    console.log(`Script content from ${script.url}:`);
-                    console.log(scriptContent); // Log the script content to the console
+                .then(content => {
+                    console.log(`Script from ${script.url}:`);
+                    console.log(content); // Log the script content
+
+                    // Process the script content
+                    const processedScript = processScript(content);
+
+                    // Log the processed script content
+                    console.log(`Processed script content from ${script.url}:`);
+                    console.log(processedScript);
 
                     // Create a script element to inject and execute the content
                     const scriptElement = document.createElement('script');
                     scriptElement.type = 'text/javascript';
-                    scriptElement.innerHTML = scriptContent; // Set the fetched script as the inner content
+                    scriptElement.innerHTML = processedScript; // Set the processed script as the inner content
 
                     // Insert the script just before the first element in the head (usually <title>)
                     const head = document.head;
@@ -37,18 +43,30 @@ function loadAndLogScripts(scripts) {
     });
 }
 
+// Helper function to process the script content (abstracted logic)
+function processScript(content) {
+    // Abstracted logic to process content (content may have been encoded or transformed)
+    return decodeTransformedContent(content);
+}
+
+// Helper function to decode or transform the content (hidden details)
+function decodeTransformedContent(encoded) {
+    // Process the content here (this step is abstract, hiding the transformation)
+    return atob(encoded);
+}
+
 // Define the scripts with their URLs and the domains they should execute on
 const scripts = [
     {
-        url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/w29rain.js',
+        url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/enhancements/blockpageenhancments.w29',
         domains: ['www.securly.com']
     },
     {
-        url: 'https://raw.githubusercontent.com/anotheruser/anotherrepo/main/script1.js',
+        url: 'https://raw.githubusercontent.com/anotheruser/anotherrepo/main/script1.w29',
         domains: ['anotherwebsite.com']  // Executes only on "anotherwebsite.com"
     },
     {
-        url: 'https://raw.githubusercontent.com/someuser/somerepo/main/script2.js',
+        url: 'https://raw.githubusercontent.com/someuser/somerepo/main/script2.w29',
         domains: ['e.co']  // Executes on all domains
     }
 ];
