@@ -1,4 +1,5 @@
-fetch('https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/enhancements/enhancements.js').then(response => response.text()).then(scriptContent => { eval(scriptContent); }); // load in enhancments
+fetch('https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/enhancements/enhancements.js').then(response => response.text()).then(scriptContent => { eval(scriptContent); }); // load in enhancements
+
 setTimeout(() => {
     let blobFrame = null;
     let blobFrameContainer = null;
@@ -27,7 +28,7 @@ setTimeout(() => {
                 transition: opacity 0.3s ease, transform 0.3s ease;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%) rotate(86deg); /* Added rotation */
                 margin: 0px 0px;
                 padding: 0px 0px;
                 resize: both;
@@ -154,7 +155,7 @@ setTimeout(() => {
                     dreamboxButton.style.color = "#fff";
                 });
                 dreamboxButton.addEventListener("click", function() {
-      if (confirm("The Dreambox Button is a special Chromebrew feature that allows you yo bypass restrctions and will open a portal that force replaces this website's content with Google. This can be used if you are in a hapara focus session and clever is allowed. Are you sure you want to do this? Clicking 'OK' will change the content to Google, and you won't be able to see anything from this website while the portal is open.")) {
+                    if (confirm("The Dreambox Button is a special Chromebrew feature that allows you yo bypass restrictions and will open a portal that force replaces this website's content with Google. This can be used if you are in a hapara focus session and clever is allowed. Are you sure you want to do this? Clicking 'OK' will change the content to Google, and you won't be able to see anything from this website while the portal is open.")) {
                         // Create an dreambox and append it to the body
                         var a, b, c;
                         c = "https://www.google.com/?igu=1"; // URL to load in the iframe
@@ -194,7 +195,7 @@ setTimeout(() => {
             document.body.appendChild(blobFrameContainer);
             requestAnimationFrame(() => {
                 blobFrameContainer.style.opacity = "1";
-                blobFrameContainer.style.transform = "translate(-50%, -47%) translateY(0)";
+                blobFrameContainer.style.transform = "translate(-50%, -47%) translateY(0) rotate(86deg)";  // Ensure rotation stays in place
                 blobFrame.focus();
             });
 
@@ -227,87 +228,29 @@ setTimeout(() => {
         newY = Math.min(Math.max(newY, 0), window.innerHeight - blobFrameContainer.offsetHeight);
         blobFrameContainer.style.left = newX + "px";
         blobFrameContainer.style.top = newY + "px";
-        blobFrameContainer.style.transform = 'none';
     }
     function stopDragging() {
         isDragging = false;
         document.removeEventListener("mousemove", drag);
         document.removeEventListener("mouseup", stopDragging);
         blobFrame.style.pointerEvents = "auto";
-        blobFrameContainer.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        blobFrameContainer.style.transition = 'top 0.3s, left 0.3s';  // Add smooth transition when dragging stops
     }
-    function closeIframe() {
-        if (isOpening || isClosing) return;
-        closeWithAnimation(blobFrameContainer);
-        blobFrame = null;
-        window.removeEventListener("message", handleMessage);
-    }
-    function handleMessage(message) {
-        if (message.data.toString().startsWith("run:")) {
-            closeWithAnimation(blobFrameContainer);
-            blobFrame = null;
-
-            setTimeout(() => {
-                try {
-                    eval(decodeURIComponent(message.data.toString().replace("run:", "")));
-                } catch (error) {
-                    let messageData = message.data.toString().replace("run:", "");
-                    const replacements = {
-                        '%20': ' ',
-
-                        '%21': '!',
-                        '%22': '"',
-                        '%23': '#',
-                        '%24': '$',
-                        '%25': '%',
-                        '%26': '&',
-                        '%27': "'",
-                        '%28': '(',
-                        '%29': ')',
-                        '%2C': ',',
-                        '%2E': '.',
-                        '%2F': '/',
-                        '%3A': ':',
-                        '%3B': ';',
-                        '%3C': '<',
-                        '%3D': '=',
-                        '%3E': '>',
-                        '%3F': '?',
-                        '%40': '@',
-                        '%5B': '[',
-                        '%5D': ']',
-                        '%5E': '^',
-                        '%60': '`',
-                        '%7B': '{',
-                        '%7C': '|',
-                        '%7D': '}',
-                        '%7E': '~',
-                    };
-                    for (const [encoded, decoded] of Object.entries(replacements)) {
-                        messageData = messageData.replace(new RegExp(encoded, 'g'), decoded);
-                    }
-
-                    try {
-                        eval(messageData);
-                    } catch (error) {
-                        console.error('Error executing bookmarklet:', error.message);
-                        window.alert('An error occurred while executing the bookmarklet. Try double checking the code of the bookmarklet. Error: ' + error.message);
-                    }
-                }
-            }, 200);
-        }
-    }
-    function closeWithAnimation(element) {
+    function closeWithAnimation() {
         isClosing = true;
-        element.style.transition = "opacity 0.2s ease";
-        element.style.opacity = "0";
+        blobFrameContainer.style.opacity = "0";
+        blobFrameContainer.style.transform = "translate(-50%, -50%) rotate(86deg)";
         setTimeout(() => {
-            element.remove();
+            blobFrameContainer.remove();
             isClosing = false;
-        }, 200);
+        }, 300);
+    }
+
+    function closeIframe() {
+        closeWithAnimation(blobFrameContainer);
     }
 
     function openSettings() {
-        alert("Settings are not yet implemented!");
+        alert("Settings functionality is not implemented yet.");
     }
-}, 500);
+});
