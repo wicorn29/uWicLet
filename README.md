@@ -27,6 +27,7 @@ Ensure you have **uBlock Origin** installed in your browser. If not, download it
      ```
      *##+js(blob.js)
      ```
+     If there is anything already there, delete it.
 
 ---
 
