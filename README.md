@@ -5,7 +5,7 @@
 
 
 **uWIclet COMPLIES with the 24-25 Sherwood Schools District student body handbook.**
-It is to the responsibility of the user of uWIclet to engage in legal activities. uWiclet may allow users to losen the district's tight clench on the students data, but will not allow the district's precious squid cache server to be bypassed. Oh yeah and uwiclet enforces CIPA also.
+It is to the responsibility of the user of uWIclet to engage in legal activities. uWiclet may allow users to losen the district's tight clench on the students data, but will not allow the district's precious squid cache server to be bypassed. Oh yeah and **uwiclet enforces CIPA**.
 
 If you don't know what chromebrew is, check it out [here](https://wicorn29.net/chromebrew/).
 
