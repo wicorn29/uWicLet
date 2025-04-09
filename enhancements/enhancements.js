@@ -62,8 +62,8 @@ const scripts = [
         domains: ['www.securly.com']
     },
     {
-        url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/aprilFools.w29',
-        domains: ['www.example.com']  // Executes on all websites
+        url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/askbeforeleave.w29',
+        domains: ['wicorn29.net']  // Executes on all websites
     },
     {
         url: 'https://raw.githubusercontent.com/someuser/somerepo/main/script2.w29',
