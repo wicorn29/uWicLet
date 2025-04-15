@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ChromeOS Developer Settings</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background-color: #f1f3f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #fff;
+      padding: 16px 24px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-size: 24px;
+      font-weight: 500;
+    }
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .setting {
+      background-color: #fff;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .setting-title {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .setting-desc {
+      font-size: 14px;
+      color: #555;
+    }
+    .setting-info {
+      flex-grow: 1;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 24px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      border-radius: 24px;
+      transition: 0.3s;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #1a73e8;
+    }
+    input:checked + .slider:before {
+      transform: translateX(16px);
+    }
+  </style>
+</head>
+<body>
+
+  <header>Developer Settings (Experimental)</header>
+  <main>
+
+    <div class="setting">
+      <div class="setting-info">
+        <div class="setting-title">Quantum Rendering Engine</div>
+        <div class="setting-desc">Enables rendering via quantum threads. May collapse reality.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="setting">
+      <div class="setting-info">
+        <div class="setting-title">Pixel Recompiler</div>
+        <div class="setting-desc">Recompiles each pixel for optimal alignment with subatomic precision.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="setting">
+      <div class="setting-info">
+        <div class="setting-title">Time Travel Debugger</div>
+        <div class="setting-desc">Allows stepping through code before it’s even written. Paradox-safe.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="setting">
+      <div class="setting-info">
+        <div class="setting-title">Duck Mode</div>
+        <div class="setting-desc">Makes your device emit random quack sounds for security purposes.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="setting">
+      <div class="setting-info">
+        <div class="setting-title">Unlimited RAM Virtualization</div>
+        <div class="setting-desc">Simulates infinite RAM using advanced imagination algorithms.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+  </main>
+</body>
+</html>
