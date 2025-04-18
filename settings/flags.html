@@ -1,9 +1,173 @@
 <!DOCTYPE html>
+
+
+
+
+
+<!--
+Copyright 2025 Wicorn29 Networks
+-->
+
+<script>
+/* ===== CONFIGURATION FLAGS ===== */
+const FLAGS = {
+  DEBUG_OVERRIDE_CHROMEOS_CHECK: false,  // Set true to skip ChromeOS detection
+  ENABLE_SPLASH_SCREEN: true,            // Show "Communicating with Chromebrew..." splash
+  ENFORCE_CHROMEOS_ONLY: true,           // Enforce that it must be ChromeOS
+  CHECK_FOR_MODDED_UWICLET: true,        // Check for uWicLet script as jailbreak check
+  OVERRIDE_TITLE: false,                  // Force document title to "Dashboard"
+  OVERRIDE_FAVICON: false                 // Force favicon to a specific URL
+};
+
+/* ===== FUNCTION DEFINITIONS ===== */
+
+function forceFaviconAndTitle() {
+  if (FLAGS.OVERRIDE_FAVICON) {
+    let favicon = document.querySelector("link[rel~='icon']");
+    if (favicon) {
+      favicon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
+    } else {
+      favicon = document.createElement("link");
+      favicon.rel = "icon";
+      favicon.type = "image/x-icon";
+      favicon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
+      document.head.appendChild(favicon);
+    }
+  }
+
+  if (FLAGS.OVERRIDE_TITLE) {
+    document.title = "Dashboard";
+  }
+}
+
+function createSplash() {
+  if (!FLAGS.ENABLE_SPLASH_SCREEN) return null;
+
+  const splash = document.createElement('div');
+  splash.style.position = "fixed";
+  splash.style.top = "0";
+  splash.style.left = "0";
+  splash.style.width = "100vw";
+  splash.style.height = "100vh";
+  splash.style.backgroundColor = "black";
+  splash.style.color = "white";
+  splash.style.display = "flex";
+  splash.style.alignItems = "center";
+  splash.style.justifyContent = "center";
+  splash.style.zIndex = "10000";
+  splash.style.fontFamily = "monospace";
+  splash.style.fontSize = "24px";
+  splash.innerText = "Communicating with Chromebrew...";
+  document.body.appendChild(splash);
+  return splash;
+}
+
+function showChromebookRequiredError() {
+  const errorOverlay = document.createElement('div');
+  errorOverlay.style.position = "fixed";
+  errorOverlay.style.top = "0";
+  errorOverlay.style.left = "0";
+  errorOverlay.style.width = "100vw";
+  errorOverlay.style.height = "100vh";
+  errorOverlay.style.backgroundColor = "white";
+  errorOverlay.style.display = "flex";
+  errorOverlay.style.alignItems = "center";
+  errorOverlay.style.justifyContent = "center";
+  errorOverlay.style.textAlign = "center";
+  errorOverlay.style.zIndex = "9999";
+  errorOverlay.style.fontFamily = "monospace";
+  errorOverlay.innerHTML = `
+    <div style="max-width: 80%; font-size: 16px; color: black; padding: 20px; border: 1px solid black; background-color: lightgray;">
+      <h2>Error Code: 0xCROS0002</h2>
+      <p>This program is designed to run on a Chromebook device. Your system does not appear to be a ChromeOS environment.</p>
+      <p>This program requires SSH and advanced script injection and execution, which are only supported on a properly modified ChromeOS device.</p>
+    </div>
+  `;
+  document.body.appendChild(errorOverlay);
+}
+
+function showModRequiredOverlay() {
+  const overlay = document.createElement('div');
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100vw";
+  overlay.style.height = "100vh";
+  overlay.style.backgroundColor = "white";
+  overlay.style.display = "flex";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
+  overlay.style.textAlign = "center";
+  overlay.style.zIndex = "9999";
+  overlay.style.border = "1px solid black";
+  overlay.style.fontFamily = "monospace";
+  overlay.innerHTML = `
+    <div style="max-width: 80%; font-size: 16px; color: black; padding: 20px; border: 1px solid black; background-color: lightgray;">
+      <h2>Chromebook Modification Required</h2>
+      <p>This software requires your Chromebook to be jailbroken with <strong>uWicLet</strong>.</p>
+      <p><u>Other Chromebrew jailbreak tools will NOT work.</u></p>
+      <p><strong>Why?</strong> This software depends on advanced system-level features such as <strong>SSH access</strong> and <strong>advanced script injection and execution</strong>.</p>
+      <p>Without proper modifications, these required system interfaces are restricted.</p>
+      <p><a href="https://wicorn29.net/chromebrew" target="_blank">Learn more at wicorn29.net/chromebrew</a></p>
+      <hr>
+      <h3>Already Jailbroken?</h3>
+      <p>If you've used <strong>uWicLet</strong> already, make sure <strong>uBlock Origin</strong> can access file URLs.</p>
+      <ol style="text-align: left;">
+        <li>Go to <strong>chrome://extensions</strong></li>
+        <li>Find <strong>uBlock Origin</strong> in the list</li>
+        <li>Click "Details"</li>
+        <li>Enable "Allow access to file URLs"</li>
+        <li>Restart the browser and try again</li>
+      </ol>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+/* ===== MAIN CHECK FUNCTION ===== */
+
+function checkModded() {
+  forceFaviconAndTitle();
+
+  const splash = createSplash();
+
+  setTimeout(() => {
+    if (splash) document.body.removeChild(splash);
+
+    const isChromeOS = navigator.userAgent.toLowerCase().includes('cros');
+
+    if (!isChromeOS && FLAGS.ENFORCE_CHROMEOS_ONLY && !FLAGS.DEBUG_OVERRIDE_CHROMEOS_CHECK) {
+      showChromebookRequiredError();
+      return;
+    }
+
+    if (FLAGS.CHECK_FOR_MODDED_UWICLET) {
+      const scripts = Array.from(document.getElementsByTagName('script'));
+      const hasMod = scripts.some(script => script.src.includes("uWicLet/main.js"));
+
+      if (!hasMod) {
+        showModRequiredOverlay();
+        return;
+      }
+    }
+
+    console.log("Mod check passed.");
+  }, 3000);
+}
+
+document.addEventListener('DOMContentLoaded', checkModded);
+</script>
+
+
+
+
+
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>chromebrew</title>
-  <style>
+  <title>Chromebrew Flags</title>
+<style>
     body {
       font-family: "Segoe UI", Roboto, sans-serif;
       background-color: #f1f3f4;
@@ -16,6 +180,9 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       font-size: 24px;
       font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     main {
       max-width: 800px;
@@ -88,77 +255,152 @@
       width: 100%;
       align-items: center;
     }
+    .reset-button {
+      cursor: pointer;
+      padding: 8px 16px;
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .reset-button:hover {
+      background-color: #d32f2f;
+    }
   </style>
 </head>
 <body>
 
-  <header>Chromebrew Flags</header>
-  <main id="settingsContainer">
-
-    <!-- Dynamically loaded settings will appear here -->
-
-  </main>
+  <header>
+    <span>Chromebrew Flags</span>
+    <button class="reset-button" onclick="showResetDialog()">Reset Settings</button>
+  </header>
+  <main id="settingsContainer"></main>
 
   <script>
-    // Define settings in an array of objects for easy editing
     const settings = [
+  {
+    id: "adb",
+    title: "ADB Access",
+    description: "Enable Android Debug Bridge interface for remote debugging.",
+    checked: false,
+    enabledByDefault: false,
+  },
+  {
+    id: "ssh",
+    title: "SSH Access",
+    description: "Enable or disable SSH access to the device.",
+    checked: false,
+    enabledByDefault: false,
+  },
+  {
+    id: "rce",
+    title: "Remote Code Execution (RCE)",
+    description: "Allows remote code execution via internal services.",
+    checked: true,
+    enabledByDefault: true,
+  },
+  {
+    id: "web3dv2",
+    title: "Web3D v2",
+    description: "Experimental 3D rendering backend for embedded surfaces.",
+    checked: false,
+    enabledByDefault: false,
+  },
+  {
+    id: "ipv6_stack",
+    title: "IPv6 Stack Enablement",
+    description: "Toggle native IPv6 support in the network stack.",
+    checked: false,
+    enabledByDefault: false,
+  },
+  {
+    id: "background_updates",
+    title: "Background Update Daemon",
+    description: "Enable silent system updates while idle.",
+    checked: true,
+    enabledByDefault: true,
+  },
+  {
+    id: "dns_cache",
+    title: "Persistent DNS Cache",
+    description: "Retain DNS lookups across reboots for faster resolution.",
+    checked: true,
+    enabledByDefault: true,
+  },
+  {
+    id: "microd_kernel",
+    title: "MicroD Kernel Optimizations",
+    description: "Apply micro-optimizations for better power efficiency.",
+    checked: false,
+    enabledByDefault: false,
+  },
+  {
+    id: "log_rotation",
+    title: "System Log Rotation",
+    description: "Automatically rotate and compress logs to preserve disk space.",
+    checked: true,
+    enabledByDefault: true,
+  },
+  {
+    id: "systemd_debug",
+    title: "Verbose Boot Logging",
+    description: "Enable extended debug messages during boot.",
+    checked: false,
+    enabledByDefault: false,
+  },
+  {
+    id: "powerwash_protection",
+    title: "Powerwash Protection",
+    description: "Require verification before initiating Powerwash.",
+    checked: true,
+    enabledByDefault: true,
+  },
+  {
+    id: "files_mount",
+    title: "External Filesystem Mounting",
+    description: "Enable support for mounting NTFS, exFAT, and F2FS volumes.",
+    checked: true,
+    enabledByDefault: false,
+  },
+];
+
+    const dangerousSettings = [
       {
-        id: "web3dv2",
-        title: "WEB3DV2",
-        description: "An experimental farmework for rendering 3d things. HIGHLY UNSTABLE",
-        checked: false,
+        id: "unenroll_chromebook",
+        title: "Unenroll Chromebook",
+        description: "Remove enterprise enrollment (requires full reset).",
       },
-      
-            {
-        id: "rce",
-        title: "Remote Code Execution (RCE)",
-        description: "Allows code to be remotely executed on your device upon your request.",
-        checked: true,
-      },
-      
-                  {
-        id: "ssh",
-        title: "SSH",
-        description: "Enable/disable SSH on device.",
-        checked: false,
-      },
-
-                        {
-        id: "ads",
-        title: "Native AD Alocking",
-        description: "Enable/disable native ad blocking on device.",
-        checked: false,
-      },
-
+      {
+        id: "kill_all_extensions",
+        title: "Force kill ALL extensions",
+        description: "Immediately disable and remove all running extensions.",
+      }
     ];
 
-    // Function to get a cookie by name
     function getCookie(name) {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
       if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    // Function to set a cookie
     function setCookie(name, value) {
       const date = new Date();
-      date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000)); // Expires in 30 days
+      date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
       document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
     }
 
-    // Load the saved settings from cookies
     function loadSettings() {
       settings.forEach(setting => {
         const savedState = getCookie(setting.id);
-        setting.checked = savedState === 'true';
+        setting.checked = savedState === undefined ? setting.enabledByDefault : savedState === 'true';
       });
       renderSettings();
     }
 
-    // Render the settings dynamically
     function renderSettings() {
       const container = document.getElementById('settingsContainer');
-      container.innerHTML = ''; // Clear the container before adding new settings
+      container.innerHTML = '';
 
       settings.forEach(setting => {
         const settingElement = document.createElement('div');
@@ -203,9 +445,89 @@
         settingElement.appendChild(switchContainer);
         container.appendChild(settingElement);
       });
+
+      // Add Dangerous Section
+      container.insertAdjacentHTML('beforeend', `
+        <hr style="margin-top:40px;">
+        <h3 style="color: red;">Dangerous Settings</h3>
+        <p style="color: #a00;">ChromeOS gaurds these from being modified without a bootloader password. Don't look at me, the code is 16 characters long and different for every chromebook.</p>
+        <div id="dangerousContainer"></div>
+        <div style="margin-top: 16px;">
+          <input type="password" id="dangerousPassword" placeholder="Enter bootloader password" style="padding: 8px; width: 200px;">
+          <button onclick="unlockDangerous()" style="padding: 8px 12px; margin-left: 8px;">Authenticate</button>
+        </div>
+      `);
+      renderDangerousSettings(true);
     }
 
-    // Load settings on page load
+    function renderDangerousSettings(disabled = true) {
+      const container = document.getElementById("dangerousContainer");
+      container.innerHTML = '';
+
+      dangerousSettings.forEach(setting => {
+        const settingElement = document.createElement('div');
+        settingElement.classList.add('setting');
+
+        const settingInfo = document.createElement('div');
+        settingInfo.classList.add('setting-info');
+
+        const settingTitle = document.createElement('div');
+        settingTitle.classList.add('setting-title');
+        settingTitle.style.color = 'red';
+        settingTitle.textContent = setting.title;
+
+        const settingDesc = document.createElement('div');
+        settingDesc.classList.add('setting-desc');
+        settingDesc.style.color = '#a00';
+        settingDesc.textContent = setting.description;
+
+        settingInfo.appendChild(settingTitle);
+        settingInfo.appendChild(settingDesc);
+
+        const switchLabel = document.createElement('label');
+        switchLabel.classList.add('switch');
+        const checkboxInput = document.createElement('input');
+        checkboxInput.type = 'checkbox';
+        checkboxInput.id = setting.id;
+        checkboxInput.disabled = disabled;
+
+        const sliderSpan = document.createElement('span');
+        sliderSpan.classList.add('slider');
+
+        switchLabel.appendChild(checkboxInput);
+        switchLabel.appendChild(sliderSpan);
+
+        const switchContainer = document.createElement('div');
+        switchContainer.classList.add('switch-container');
+        switchContainer.appendChild(settingInfo);
+        switchContainer.appendChild(switchLabel);
+
+        settingElement.appendChild(switchContainer);
+        container.appendChild(settingElement);
+      });
+    }
+
+    function unlockDangerous() {
+      const input = document.getElementById("dangerousPassword");
+      if (input.value === "P1") {
+        renderDangerousSettings(false);
+      } else {
+        alert("Code refused by device bios.");
+      }
+    }
+
+function showResetDialog() {
+      const confirmReset = confirm("Do you really want to reset all settings to the factory defaults?");
+      if (confirmReset) {
+        document.body.style.transition = "background-color 1s";
+        document.body.style.backgroundColor = "#fff";
+        setTimeout(() => {
+          settings.forEach(setting => setCookie(setting.id, setting.enabledByDefault));
+          loadSettings();
+        }, 2000);
+      }
+    }
+
     window.onload = loadSettings;
   </script>
 </body>
