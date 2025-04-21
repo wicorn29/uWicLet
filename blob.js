@@ -1,3 +1,4 @@
+/// blob.js
 var backupAlert = window.alert;
 document.addEventListener('DOMContentLoaded', function () {
     if (window.self !== window.top && document.title === "uBlobeBM") {
@@ -39,19 +40,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                 window.alert = backupAlert;
                                 alert("uWicLet failed to load on this page! Error: Blocked by Content Security Policy");
                                 window.alert = newAlert;
-                                var userResponse = window.confirm("The script was blocked by Content Security Policy. Would you like to execute the JavaScript anyway? This is not recommended unless you really need it.");
-                                if (userResponse) {
-                                    document.body.appendChild(script4);
-                                }
+
+
+
+
                             }
                         });
                     }
-                }, 10);
-                document.body.appendChild(script4);
-            };
-            document.body.appendChild(script3);
-        };
-        document.body.appendChild(script2);
-    };
-    document.body.appendChild(script);
-});
