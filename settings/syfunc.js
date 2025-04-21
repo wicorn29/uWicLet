@@ -1,4 +1,5 @@
-if (!confirm("Do you want to open settings?\n\nThis will completely unload the current page and any unsaved data will be lost.")) return;
+(function() {
+    if (!confirm("Do you want to open settings?\n\nThis will completely unload the current page and any unsaved data will be lost.")) return;
 
     // Fade to white
     const overlay = document.createElement('div');
@@ -26,3 +27,4 @@ if (!confirm("Do you want to open settings?\n\nThis will completely unload the c
         iframe.style.cssText = 'position:fixed;top:0;left:0;bottom:0;right:0;width:100vw;height:100vh;border:none;margin:0;padding:0;z-index:9999;overflow:hidden;';
         document.body.appendChild(iframe);
     }, 1200);
+})();
