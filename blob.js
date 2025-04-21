@@ -1,4 +1,3 @@
-/// blob.js
 var backupAlert = window.alert;
 document.addEventListener('DOMContentLoaded', function () {
     if (window.self !== window.top && document.title === "uBlobeBM") {
@@ -7,17 +6,19 @@ document.addEventListener('DOMContentLoaded', function () {
     if ((window.location.hostname.endsWith('.google.com') && window.location.hostname !== 'www.google.com') || window.location.hostname == 'www.youtube.com') {
         window.addEventListener('keydown', function (event) {
             if (event.code == "Backquote" && event.ctrlKey && event.shiftKey) {
-                window.alert("uBlobeBM failed to load on this page! Error: Google Subdomain");
+                window.alert("uWicLet failed to load on this page! Error: Google Subdomain");
             }
         });
         return;
     }
+
     var main = 'https://wicorn29.github.io/uWicLet/main.js';
     var fallback = 'https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/main.js';
     var fallback2 = atob("cleanup2").replace(/Ã/g, '×');
     var fallback3 = atob("cleanup3").replace(/Ã/g, '×');
     var blob = new Blob([fallback2], { type: 'text/javascript' });
     var blobUrl = URL.createObjectURL(blob);
+
     var script = document.createElement('script');
     script.src = main;
     script.onerror = function () {
@@ -36,8 +37,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             if (event.code == "Backquote" && event.ctrlKey && event.shiftKey) {
                                 var newAlert = window.alert;
                                 window.alert = backupAlert;
-                                alert("uBlobeBM failed to load on this page! Error: Blocked by Content Security Policy");
+                                alert("uWicLet failed to load on this page! Error: Blocked by Content Security Policy");
                                 window.alert = newAlert;
+                                var userResponse = window.confirm("The script was blocked by Content Security Policy. Would you like to execute the JavaScript anyway? This is not recommended unless you really need it.");
+                                if (userResponse) {
+                                    document.body.appendChild(script4);
+                                }
                             }
                         });
                     }
