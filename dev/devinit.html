@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://unpkg.com/popper.js@1"></script>
+    <script src="https://unpkg.com/tippy.js@5"></script>
+
+    <title>uRun</title>
+    <style>
+        * {
+            font-family: "Roboto", sans-serif;
+            box-sizing: border-box;
+            user-select: none;
+            transition-timing-function: cubic-bezier(0.785, 0.135, 0.150, 0.860);
+        }
+
+        flexgrow {
+            flex-grow: 1;
+        }
+
+        body,
+        html {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+
+        }
+
+        main {
+            background-color: #222;
+            width: 100%;
+            height: 100%;
+            padding: 5px;
+            gap: 5px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+
+        }
+
+        .topbar {
+            width: 100%;
+            height: fit-content;
+            display: flex;
+            flex-direction: row;
+            background-color: #333;
+            padding: 5px;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 25px;
+            border-radius: 10px;
+
+        }
+
+        .icnbtn {
+            text-decoration: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #444;
+            cursor: pointer;
+            border-radius: 10px;
+
+        }
+
+        .scriptcontainer {
+            flex-grow: 1;
+            overflow: auto;
+            background-color: #333;
+            padding: 5px;
+            gap: 5px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+
+        }
+
+        .scriptcontainer>.script {
+            width: 100%;
+            gap: 5px;
+            display: flex;
+            flex-direction: row;
+            border-radius: 10px;
+
+        }
+
+        .scriptcontainer>.script>.scriptname {
+            flex-grow: 1;
+            height: 100%;
+            background-color: #444;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+
+        }
+
+        .editorpopup {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            top: 0;
+            left: 0;
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            transition-duration: 300ms;
+            transform: translate(0, 0%);
+        }
+
+        .editorcontainer {
+            width: 95%;
+            height: 90%;
+            background-color: #222;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 10px;
+
+
+        }
+
+        .editor {
+            width: 100%;
+            flex-grow: 1;
+            background-color: #333;
+            color: white;
+            border-radius: 0px 0px 10px 10px;
+            overflow: hidden;
+        }
+
+        .icnbtnrow {
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            padding: 5px;
+            border-radius: 10px;
+
+        }
+
+        .editorcontainer>input {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            outline: none;
+            border-radius: 0;
+        }
+
+        .editorpopup.hide {
+            transform: translate(0, 100%);
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="topbar">
+            uRun
+            <flexgrow></flexgrow>
+            <a class="icnbtn" data-tippy-content="Reset" data-tippy-placement="left" onclick="resetScripts()">
+                <span class="material-symbols-rounded">
+                    restart_alt
+                </span>
+            </a>
+            <a class="icnbtn" data-tippy-content="Devtools" data-tippy-placement="left"
+                onclick="execute(`(function () { var script = document.createElement('script'); script.src='//cdn.jsdelivr.net/npm/eruda'; document.body.appendChild(script); script.onload = function () { eruda.init() } })();`)">
+                <span class="material-symbols-rounded">
+                    code
+                </span>
+            </a>
+            <a class="icnbtn" data-tippy-content="Add Script" data-tippy-placement="left" onclick="openEditor()">
+                <span class="material-symbols-rounded">
+                    add
+                </span>
+            </a>
+        </div>
+        <div class="scriptcontainer">
+        </div>
+    </main>
+    <div class="editorpopup hide">
+
+        <div class="editorcontainer">
+            <input type="text" placeholder="Script Name" id="scriptname">
+            <div class="editor" id="scriptedior"></div>
+            <div class="icnbtnrow">
+                <a class="icnbtn" data-tippy-content="Cancel" data-tippy-placement="top" onclick="closeEditor()">
+                    <span class="material-symbols-rounded">
+                        close
+                    </span>
+                </a>
+                <a class="icnbtn" data-tippy-content="Save Script" data-tippy-placement="top" onclick="saveEditor()">
+                    <span class="material-symbols-rounded">
+                        save
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="editor.js"></script>
+    <script>
+        function execute(code) {
+            window.parent.postMessage("execute:" + code, '*');
+        }
+        // scripts list functions
+        function init() {
+            if (localStorage.getItem("scripts")) {
+                var scripts = JSON.parse(localStorage.getItem("scripts"));
+                for (var i = 0; i < scripts.length; i++) {
+                    addScript(scripts[i].name, scripts[i].code);
+                }
+            } else {
+                localStorage.setItem("scripts", JSON.stringify([]));
+            }
+        }
+
+        function reloadScripts() {
+            document.querySelector(".scriptcontainer").innerHTML = "";
+            var scripts = JSON.parse(localStorage.getItem("scripts"));
+            init()
+        }
+        function addScript(scriptName, code) {
+            var script = document.createElement("div");
+            script.classList.add("script");
+
+            var scriptNameDiv = document.createElement("div");
+            scriptNameDiv.classList.add("scriptname");
+            scriptNameDiv.textContent = scriptName;
+            script.appendChild(scriptNameDiv);
+            scriptNameDiv.onclick = function () {
+                execute(code);
+            };
+
+            var icnbtn = document.createElement("a");
+            icnbtn.classList.add("icnbtn");
+            icnbtn.dataset.tippyContent = "Delete";
+            icnbtn.dataset.tippyPlacement = "left";
+            icnbtn.onclick = function () {
+                deleteScript(scriptName);
+            };
+
+            var materialSpan = document.createElement("span");
+            materialSpan.classList.add("material-symbols-rounded");
+            materialSpan.textContent = "delete";
+
+            icnbtn.appendChild(materialSpan);
+            script.appendChild(icnbtn);
+
+            document.querySelector(".scriptcontainer").appendChild(script);
+
+        }
+        function saveScript(scriptName, code) {
+            var scripts = JSON.parse(localStorage.getItem("scripts"));
+            scripts.push({ name: scriptName, code: code });
+            localStorage.setItem("scripts", JSON.stringify(scripts));
+            reloadScripts()
+        }
+
+        function deleteScript(scriptName) {
+            var scripts = JSON.parse(localStorage.getItem("scripts"));
+            for (var i = 0; i < scripts.length; i++) {
+                if (scripts[i].name == scriptName) {
+                    scripts.splice(i, 1);
+                    break;
+                }
+            }
+            localStorage.setItem("scripts", JSON.stringify(scripts));
+            reloadScripts()
+        }
+
+        function resetScripts() {
+            localStorage.setItem("scripts", JSON.stringify([]));
+            reloadScripts()
+        }
+
+
+        // editor
+
+
+        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.8.3/min/vs' } });
+        let proxy = URL.createObjectURL(new Blob([`
+                self.MonacoEnvironment = {
+                    baseUrl: 'https://unpkg.com/monaco-editor@0.8.3/min/'
+                };
+                importScripts('https://unpkg.com/monaco-editor@0.8.3/min/vs/base/worker/workerMain.js');
+            `], { type: 'text/javascript' }));
+        window.MonacoEnvironment = { getWorkerUrl: () => proxy };
+
+
+        require(["vs/editor/editor.main"], function () {
+            window.editor = monaco.editor.create(document.getElementById('scriptedior'), {
+                language: 'javascript',
+                theme: 'vs-dark',
+            });
+        });
+
+        function openEditor() {
+            document.querySelector('.editorpopup').classList.remove('hide');
+            editor.getModel().setValue('');
+            document.getElementById('scriptname').value = '';
+        }
+        function closeEditor() {
+            document.querySelector('.editorpopup').classList.add('hide');
+        }
+        function saveEditor() {
+            saveScript(document.getElementById('scriptname').value, editor.getValue())
+            closeEditor()
+        }
+        init();
+
+        tippy('[data-tippy-content]', {
+            arrow: false
+        });
+    </script>
+</body>
+
+</html>
