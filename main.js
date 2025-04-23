@@ -1,6 +1,3 @@
-fetch('https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/dev/devinit.js').then(response => response.text()).then(scriptContent => { eval(scriptContent); }); // load in the debugger
-
-
 fetch('https://raw.githubusercontent.com/wicorn29/uWicLet/refs/heads/main/enhancements/enhancements.js').then(response => response.text()).then(scriptContent => { eval(scriptContent); }); // load in enhancments
 
 setTimeout(() => {
