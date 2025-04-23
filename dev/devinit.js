@@ -1,4 +1,4 @@
-/// urun.js
+/// devinit.js
 document.addEventListener("keydown", function (e) {
 	if (e.key == "!" && e.ctrlKey) {
 		var t = window.open("", "_blank", "width=500,height=300");
