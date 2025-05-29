@@ -1,7 +1,0 @@
-{
-    "loader": {
-        "system": "chromebrew.pdf",
-        "sysemtype": "ChromeOS"
-        "systeminterface": "wicorn29ChromeOSPDFPortal"
-    }
-}
