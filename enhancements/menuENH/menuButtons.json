@@ -1,0 +1,20 @@
+[
+  {
+    "icon": "🧹",
+    "name": "Clear Console",
+    "hover": "Clears the browser console",
+    "script": "console.clear();"
+  },
+  {
+    "icon": "🔊",
+    "name": "Play Sound",
+    "hover": "Plays a beep",
+    "script": "new Audio('https://www.soundjay.com/button/beep-07.wav').play();"
+  },
+  {
+    "icon": "🌐",
+    "name": "Log URL",
+    "hover": "Logs the current page URL",
+    "script": "console.log(window.location.href);"
+  }
+]

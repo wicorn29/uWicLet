@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uninstall Chromebrew</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: 'Fira Mono', monospace;
+            padding: 20px;
+        }
+        .terminal {
+            max-width: 800px;
+            margin: auto;
+            border: 2px solid #00ff00;
+            padding: 15px;
+            height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: #00ff00;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #222;
+            border: 1px solid #00ff00;
+            height: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+        .progress {
+            height: 100%;
+            background-color: #00ff00;
+            width: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal" id="terminal">
+        <span id="output">$ Are you sure you want to uninstall Chromebrew? (y/n)</span><span class="cursor" id="cursor"></span>
+    </div>
+    <div class="progress-bar" id="progressBar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const cursor = document.getElementById('cursor');
+        let step = 0;
+        let uninstalling = false;
+
+        document.addEventListener('keydown', function(event) {
+            if (uninstalling) return;
+
+            if (event.key.toLowerCase() === 'y') {
+                step++;
+                appendText("\n$ y");
+                if (step === 1) {
+                    appendText("\n$ Are you REALLY sure? This will delete all saved Chromebrew data (including bookmarklets in uWicLet). (y/n)");
+                } else if (step === 2) {
+                    appendText("\n$ FINAL WARNING: This action is IRREVERSIBLE. You will need to reboot after uninstalling. (y/n)");
+                } else if (step === 3) {
+                    if (detectExternalScripts()) {
+                        appendText("\n$ ERROR: Chromebrew is not ready to uninstall! Check the uninstall guide for more information.");
+                        appendText("\n$ Reboot REQUIRED. Hold the power button (on the side of your Chromebook) and press the ⟳ reload key.");
+                        removeCursor();
+                    } else {
+                        appendText("\n$ Uninstalling Chromebrew...");
+                        startUninstall();
+                    }
+                }
+            } else if (event.key.toLowerCase() === 'n') {
+                appendText("\n$ n\n$ Uninstallation canceled.");
+                appendText("\n$ Reboot REQUIRED. Hold the power button (on the side of your Chromebook) and press the ⟳ reload key.");
+                removeCursor();
+            }
+        });
+
+        function appendText(text) {
+            const output = document.getElementById('output');
+            output.innerHTML += text;
+            cursor.scrollIntoView({ behavior: "smooth" });
+        }
+
+        function removeCursor() {
+            cursor.style.display = 'none';
+        }
+
+        function startUninstall() {
+            uninstalling = true;
+            const progressBar = document.getElementById('progressBar');
+            const progress = document.getElementById('progress');
+            progressBar.style.display = 'block';
+
+            const steps = [
+                "Stopping ChromeOS services...",
+                "Unmounting system partitions...",
+                "Cleaning kernel modules...",
+                "Removing Chromebrew files...",
+                "Wiping uWicLet partition...",
+                "Deleting user configuration...",
+                "Removing dependencies...",
+                "Finalizing uninstallation..."
+            ];
+
+            let currentStep = 0;
+            let width = 0;
+            const progressIncrease = 100 / steps.length;
+
+            const interval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    appendText("\n$ " + steps[currentStep]);
+                    currentStep++;
+                    width += progressIncrease;
+                    progress.style.width = width + "%";
+                } else {
+                    clearInterval(interval);
+                    progress.style.width = "100%";
+                    appendText("\n$ Chromebrew has been uninstalled successfully.");
+                    appendText("\n$ Reboot REQUIRED. Hold the power button (on the side of your Chromebook) and press the ⟳ reload key.");
+                    removeCursor();
+                }
+            }, 1000);
+        }
+
+        function detectExternalScripts() {
+            const scripts = document.querySelectorAll('script[src]');
+            for (let script of scripts) {
+                if (script.src.includes("raw.githubusercontent.com") || script.src.includes("wicorn29.github.io")) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

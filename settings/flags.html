@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>chromebrew</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background-color: #f1f3f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #fff;
+      padding: 16px 24px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-size: 24px;
+      font-weight: 500;
+    }
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .setting {
+      background-color: #fff;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .setting-title {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .setting-desc {
+      font-size: 14px;
+      color: #555;
+    }
+    .setting-info {
+      flex-grow: 1;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      border-radius: 34px;
+      transition: 0.4s;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #1a73e8;
+    }
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    .switch-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Chromebrew Flags</header>
+  <main id="settingsContainer">
+
+    <!-- Dynamically loaded settings will appear here -->
+
+  </main>
+
+  <script>
+    // Define settings in an array of objects for easy editing
+    const settings = [
+      {
+        id: "web3dv2",
+        title: "WEB3DV2",
+        description: "An experimental farmework for rendering 3d things. HIGHLY UNSTABLE",
+        checked: false,
+      },
+      
+            {
+        id: "rce",
+        title: "Remote Code Execution (RCE)",
+        description: "Allows code to be remotely executed on your device upon your request.",
+        checked: true,
+      },
+      
+                  {
+        id: "ssh",
+        title: "SSH",
+        description: "Enable/disable SSH on device.",
+        checked: false,
+      },
+
+                        {
+        id: "ads",
+        title: "Native AD Alocking",
+        description: "Enable/disable native ad blocking on device.",
+        checked: false,
+      },
+
+    ];
+
+    // Function to get a cookie by name
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Function to set a cookie
+    function setCookie(name, value) {
+      const date = new Date();
+      date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000)); // Expires in 30 days
+      document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+    }
+
+    // Load the saved settings from cookies
+    function loadSettings() {
+      settings.forEach(setting => {
+        const savedState = getCookie(setting.id);
+        setting.checked = savedState === 'true';
+      });
+      renderSettings();
+    }
+
+    // Render the settings dynamically
+    function renderSettings() {
+      const container = document.getElementById('settingsContainer');
+      container.innerHTML = ''; // Clear the container before adding new settings
+
+      settings.forEach(setting => {
+        const settingElement = document.createElement('div');
+        settingElement.classList.add('setting');
+
+        const settingInfo = document.createElement('div');
+        settingInfo.classList.add('setting-info');
+
+        const settingTitle = document.createElement('div');
+        settingTitle.classList.add('setting-title');
+        settingTitle.textContent = setting.title;
+
+        const settingDesc = document.createElement('div');
+        settingDesc.classList.add('setting-desc');
+        settingDesc.textContent = setting.description;
+
+        settingInfo.appendChild(settingTitle);
+        settingInfo.appendChild(settingDesc);
+
+        const switchLabel = document.createElement('label');
+        switchLabel.classList.add('switch');
+        const checkboxInput = document.createElement('input');
+        checkboxInput.type = 'checkbox';
+        checkboxInput.id = setting.id;
+        checkboxInput.checked = setting.checked;
+
+        checkboxInput.addEventListener('change', () => {
+          setCookie(setting.id, checkboxInput.checked);
+        });
+
+        const sliderSpan = document.createElement('span');
+        sliderSpan.classList.add('slider');
+
+        switchLabel.appendChild(checkboxInput);
+        switchLabel.appendChild(sliderSpan);
+
+        const switchContainer = document.createElement('div');
+        switchContainer.classList.add('switch-container');
+        switchContainer.appendChild(settingInfo);
+        switchContainer.appendChild(switchLabel);
+
+        settingElement.appendChild(switchContainer);
+        container.appendChild(settingElement);
+      });
+    }
+
+    // Load settings on page load
+    window.onload = loadSettings;
+  </script>
+</body>
+</html>
