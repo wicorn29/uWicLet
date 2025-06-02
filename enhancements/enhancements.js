@@ -66,8 +66,8 @@ const scripts = [
         domains: ["wicorn29.net"]  // Executes on all websites
     },
     {
-        url: 'https://raw.githubusercontent.com/someuser/somerepo/main/script2.w29',
-        domains: ['e.co']  // Executes on all domains
+        url: 'null',
+        domains: ['gemini.google.com']  // Executes on all domains
     }
 ];
 
