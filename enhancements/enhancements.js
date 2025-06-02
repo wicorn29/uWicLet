@@ -63,11 +63,11 @@ const scripts = [
     },
     {
         url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/askbeforeleave.w29',
-        domains: ["wicorn29.net"]  // Executes on all websites
+        domains: ["wicorn29.net"]
     },
     {
-        url: 'null',
-        domains: ['gemini.google.com']  // Executes on all domains
+        url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/GaminiHideV1.w29',
+        domains: ['gemini.google.com']
     }
 ];
 
