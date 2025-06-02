@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             if (event.code == "Backquote" && event.ctrlKey && event.shiftKey) {
                                 var newAlert = window.alert;
                                 window.alert = backupAlert;
-                                alert("uBlobeBM failed to load on this page! Error: Blocked by Content Security Policy");
+                                alert("uWicLet failed to load on this page! Error: Blocked by Content Security Policy");
                                 window.alert = newAlert;
                             }
                         });
