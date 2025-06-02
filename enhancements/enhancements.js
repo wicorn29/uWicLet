@@ -68,6 +68,10 @@ const scripts = [
     {
         url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/GaminiHideV1.w29',
         domains: ['gemini.google.com']
+    },
+    {
+        url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/categoryaggressionlock.w29',
+        domains: ['*']
     }
 ];
 
