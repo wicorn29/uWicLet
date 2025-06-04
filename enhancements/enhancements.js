@@ -72,6 +72,10 @@ const scripts = [
     {
         url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/categoryaggressionlock.w29',
         domains: ['*']
+    },
+     {
+     url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/unmodmsg.w29',
+     domains: ['*']
     }
 ];
 
