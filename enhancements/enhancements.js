@@ -75,7 +75,7 @@ const scripts = [
     },
      {
      url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/unmodmsg.w29',
-     domains: ['*']
+     domains: ['']
     }
 ];
 
