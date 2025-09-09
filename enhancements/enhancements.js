@@ -70,7 +70,7 @@ const scripts = [
         domains: ['gemini.google.com']
     },
     {
-        url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/categoryaggressionlock.w29',
+        url: 'https://raw.githubusercontent.com/wicorn29/uWicLet/main/enhancements/123.w29',
         domains: ['*']
     }
 ];
