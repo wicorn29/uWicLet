@@ -1,13 +1,13 @@
 # Welcome to uWicLet!
 
-
+# Development and support for this project no longer exist. DO NOT email me asking for support, you will not get a response.
 
 
 
 **uWIclet COMPLIES with the 24-25 Sherwood Schools District student body handbook.**
 It is to the responsibility of the user of uWIclet to engage in legal activities. uWiclet may allow users to losen the district's tight clench on the students data, but will not allow the district's precious squid cache server to be bypassed. Oh yeah and **uwiclet enforces CIPA**.
 
-If you don't know what chromebrew is, check it out [here](https://wicorn29.net/chromebrew/).
+~~If you don't know what chromebrew is, check it out [here](https://wicorn29.net/chromebrew/).~~
 
 
 **uWicLet** is a tool that allows you to execute and manage bookmarklets using **uBlock Origin** by leveraging the **uBlock Run** exploit. This is especially useful if bookmarklets are blocked by your administrator or do not work on your device. **uWicLet** also includes some CSP bypassing techniques, making it functional on sites where regular **uBlock Run** or **uRun** fail, such as Blooket.
@@ -41,7 +41,7 @@ Ensure you have **uBlock Origin** installed in your browser. If not, download it
 
 ### 1. **Opening uWicLet**
    - Press `CTRL + Shift + ~` to open uWicLet.
-   - If you receive a warning about a strict **Content Security Policy (CSP)**, some bookmarklets may not work properly—especially those that load scripts from external sources.
+   - If you receive a warning about a strict **Content Security Policy (CSP)**, some bookmarklets may not work properly especially those that load scripts from external sources.
 
 ### 2. **Adding Bookmarklets**
    - Locate the **"Enter bookmarklet code here"** text input.
