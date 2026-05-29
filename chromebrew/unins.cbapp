@@ -5,46 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uninstall Chromebrew</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: black;
-            color: #00ff00;
-            font-family: 'Fira Mono', monospace;
-            padding: 20px;
-        }
-        .terminal {
-            max-width: 800px;
-            margin: auto;
-            border: 2px solid #00ff00;
-            padding: 15px;
-            height: 400px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 16px;
-            background-color: #00ff00;
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-        .progress-bar {
-            width: 100%;
-            background-color: #222;
-            border: 1px solid #00ff00;
-            height: 10px;
-            margin-top: 10px;
-            display: none;
-        }
-        .progress {
-            height: 100%;
-            background-color: #00ff00;
-            width: 0;
-        }
-    </style>
 </head>
 <body>
     <div class="terminal" id="terminal">
